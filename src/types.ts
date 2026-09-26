@@ -11,6 +11,8 @@ export interface TranslationDict {
   langLabel: string;
   by: string;
   asOfDate: string;
+  volatilityIndexLabel: string;
+  trendsSearchVolumeLabel: string;
   timeframes: {
     thirtyDays: string;
     ninetyDays: string;
@@ -45,6 +47,54 @@ export interface TranslationDict {
       desc: string;
     };
   };
+  trends: {
+    toggleLabel: string;
+    overlayTitle: string;
+    overlaySubtitle: string;
+    presetsLabel: string;
+    customInputPlaceholder: string;
+    customInputLabel: string;
+    geoLabel: string;
+    interestAxis: string;
+    correlationTitle: string;
+    correlationScore: string;
+    presets: {
+      google_algorithm_update: string;
+      google_core_update: string;
+      serp_volatility: string;
+      google_ranking_drop: string;
+      google_search_update: string;
+    };
+    countries: {
+      worldwide: string;
+      us: string;
+      uk: string;
+      il: string;
+      de: string;
+      ru: string;
+    };
+    correlationStrength: {
+      strong_pos: string;
+      moderate_pos: string;
+      weak_pos: string;
+      neutral: string;
+      negative: string;
+    };
+    correlationDesc: {
+      strong_positive: string;
+      moderate_positive: string;
+      weak_positive: string;
+      neutral: string;
+      negative: string;
+    };
+    tooltipInterest: string;
+    volatilityIndex: string;
+    trendsSearchVolume: string;
+    tooltipVolatility: string;
+    tooltipSearchVolume: string;
+    customBadge: string;
+    openInGoogleTrends: string;
+  };
   eventTable: {
     title: string;
     subtitle: string;
@@ -57,6 +107,43 @@ export interface TranslationDict {
     noEvents: string;
     showDetails: string;
     hideDetails: string;
+  };
+  alerts: {
+    headerBtn: string;
+    modalTitle: string;
+    modalSubtitle: string;
+    browserTitle: string;
+    browserDesc: string;
+    browserEnableBtn: string;
+    browserEnabledBadge: string;
+    browserDeniedBadge: string;
+    browserNotSupported: string;
+    testAlertBtn: string;
+    testAlertSent: string;
+    emailTitle: string;
+    emailDesc: string;
+    emailPlaceholder: string;
+    thresholdLabel: string;
+    thresholds: {
+      fifty: string;
+      sixty: string;
+      seventyFive: string;
+    };
+    subscribeBtn: string;
+    subscribedBadge: string;
+    unsubscribeBtn: string;
+    emailSuccess: string;
+    emailInvalid: string;
+    testNotificationTitle: string;
+    testNotificationBody: string;
+    highVolatilityAlertTitle: string;
+    highVolatilityAlertBody: string;
+    howItWorksTitle: string;
+    howItWorksDesc: string;
+    testEmailBtn: string;
+    testEmailModalTitle: string;
+    testEmailModalClose: string;
+    close: string;
   };
   faq: {
     title: string;

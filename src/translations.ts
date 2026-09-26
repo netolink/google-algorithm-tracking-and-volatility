@@ -12,6 +12,8 @@ export const translations: Record<Language, TranslationDict> = {
     langLabel: 'Language',
     by: 'by',
     asOfDate: 'As of:',
+    volatilityIndexLabel: 'Volatility Index',
+    trendsSearchVolumeLabel: 'Google Trends Search Volume',
     timeframes: {
       thirtyDays: '30 Days',
       ninetyDays: '90 Days',
@@ -46,6 +48,54 @@ export const translations: Record<Language, TranslationDict> = {
         desc: 'Official Core or Spam update active, or major system outage. High ranking flux globally.'
       }
     },
+    trends: {
+      toggleLabel: 'Google Trends Overlay',
+      overlayTitle: 'Google Trends Search Interest Overlay',
+      overlaySubtitle: 'Visualize correlation between public search spikes for algorithm queries and SERP volatility fluctuations.',
+      presetsLabel: 'Curated Presets',
+      customInputPlaceholder: 'Type custom query (e.g. helpful content update)...',
+      customInputLabel: 'Custom Keyword',
+      geoLabel: 'Region',
+      interestAxis: 'Trends Search Interest (0-100)',
+      correlationTitle: 'Correlation Analysis',
+      correlationScore: 'Pearson Correlation (r)',
+      presets: {
+        google_algorithm_update: 'Google algorithm update',
+        google_core_update: 'Google core update',
+        serp_volatility: 'SERP volatility',
+        google_ranking_drop: 'Google ranking drop',
+        google_search_update: 'Google search update'
+      },
+      countries: {
+        worldwide: 'Worldwide',
+        us: 'United States',
+        uk: 'United Kingdom',
+        il: 'Israel',
+        de: 'Germany',
+        ru: 'Russia'
+      },
+      correlationStrength: {
+        strong_pos: 'Strong Positive',
+        moderate_pos: 'Moderate Positive',
+        weak_pos: 'Weak Positive',
+        neutral: 'Neutral / Minimal',
+        negative: 'Inverted'
+      },
+      correlationDesc: {
+        strong_positive: 'High synchronicity: Public search surges strongly align with ranking volatility spikes.',
+        moderate_positive: 'Moderate synchronicity: Noticeable search volume elevation around major volatility events.',
+        weak_positive: 'Slight synchronicity: Minimal overlap between search spikes and ranking fluctuations.',
+        neutral: 'Independent signals: Search volume movements show no strong statistical tie to ranking shifts.',
+        negative: 'Divergent: Search queries and volatility behaved asynchronously during this timeframe.'
+      },
+      tooltipInterest: 'Google Trends Interest:',
+      volatilityIndex: 'Volatility Index',
+      trendsSearchVolume: 'Google Trends Search Volume',
+      tooltipVolatility: 'Volatility Index',
+      tooltipSearchVolume: 'Google Trends Search Volume',
+      customBadge: 'Custom',
+      openInGoogleTrends: 'Open in Google Trends'
+    },
     eventTable: {
       title: 'Google Search Incident & Update Log',
       subtitle: 'Official incident and update logs synchronized with Google Search Status Dashboard.',
@@ -58,6 +108,43 @@ export const translations: Record<Language, TranslationDict> = {
       noEvents: 'No official security or system incidents reported by Google during this timeframe.',
       showDetails: 'Show Details',
       hideDetails: 'Hide Details'
+    },
+    alerts: {
+      headerBtn: 'Alerts',
+      modalTitle: 'Volatility Alerts & Notifications',
+      modalSubtitle: 'Get notified instantly when the Google SERP Volatility Index spikes above critical thresholds.',
+      browserTitle: 'Browser Push Notifications',
+      browserDesc: 'Receive real-time desktop or mobile browser alerts during major algorithm turbulence.',
+      browserEnableBtn: 'Enable Browser Alerts',
+      browserEnabledBadge: 'Browser Alerts Active',
+      browserDeniedBadge: 'Notifications Blocked in Browser',
+      browserNotSupported: 'Browser notifications not supported on this device.',
+      testAlertBtn: 'Send Test Alert',
+      testAlertSent: 'Test alert sent!',
+      emailTitle: 'Email Notification Alerts',
+      emailDesc: 'Receive digest warnings sent directly to your inbox when a Google core update or storm is detected.',
+      emailPlaceholder: 'Enter your business email...',
+      thresholdLabel: 'Alert Threshold',
+      thresholds: {
+        fifty: '> 50% Volatility (Moderate Turbulence)',
+        sixty: '> 60% Volatility (Algo Storm - Recommended)',
+        seventyFive: '> 75% Volatility (Extreme Turbulence)'
+      },
+      subscribeBtn: 'Subscribe to Alerts',
+      subscribedBadge: 'Subscribed',
+      unsubscribeBtn: 'Unsubscribe',
+      emailSuccess: 'Subscription confirmed! You will receive alerts when volatility exceeds your threshold.',
+      emailInvalid: 'Please enter a valid email address.',
+      testNotificationTitle: 'Google Volatility Radar Alert (Test)',
+      testNotificationBody: 'Test notification successful. You will be notified when SERP volatility spikes above your threshold.',
+      highVolatilityAlertTitle: '⚠️ Google Algorithm Storm Detected!',
+      highVolatilityAlertBody: 'Current SERP volatility has spiked to {val}%, exceeding your alert threshold.',
+      howItWorksTitle: 'How Do Alerts Work?',
+      howItWorksDesc: 'Browser alerts use your native browser Notification API directly. For email alerts, your subscription preferences and threshold are saved in local storage. In a live production deployment, this connects to a backend email relay or SMTP provider (e.g. SendGrid, Mailgun, Amazon SES) to dispatch automated delivery.',
+      testEmailBtn: 'Send Test Email',
+      testEmailModalTitle: 'Alert Email Preview (Simulation)',
+      testEmailModalClose: 'Close Preview',
+      close: 'Close'
     },
     faq: {
       title: 'Google Algorithm Core FAQ',
@@ -100,6 +187,8 @@ export const translations: Record<Language, TranslationDict> = {
     langLabel: 'שפה',
     by: 'מבית',
     asOfDate: 'נכון ל:',
+    volatilityIndexLabel: 'מדד תנודתיות',
+    trendsSearchVolumeLabel: 'נפח חיפוש Google Trends',
     timeframes: {
       thirtyDays: '30 יום',
       ninetyDays: '90 יום',
@@ -134,6 +223,54 @@ export const translations: Record<Language, TranslationDict> = {
         desc: 'עדכון ליבה או ספאם רשמי פעיל, או תקלת מערכת רחבה. תנודתיות חריגה ומשמעותית בדירוגים בעולם.'
       }
     },
+    trends: {
+      toggleLabel: 'שכבת Google Trends',
+      overlayTitle: 'שכבת מגמות חיפוש Google Trends',
+      overlaySubtitle: 'הצגת קורלציה בין זינוקים בנפח החיפוש הציבורי עבור מונחי עדכונים לבין שיאי תנודתיות בתוצאות החיפוש (SERP).',
+      presetsLabel: 'מונחי מפתח נבחרים',
+      customInputPlaceholder: 'הקלד ביטוי מותאם אישית (למשל: helpful content update)...',
+      customInputLabel: 'ביטוי מותאם אישית',
+      geoLabel: 'אזור גיאוגרפי',
+      interestAxis: 'מדד עניין בחיפוש Trends (0-100)',
+      correlationTitle: 'ניתוח קורלציה',
+      correlationScore: 'מקדם פירסון (r)',
+      presets: {
+        google_algorithm_update: 'Google algorithm update',
+        google_core_update: 'Google core update',
+        serp_volatility: 'SERP volatility',
+        google_ranking_drop: 'Google ranking drop',
+        google_search_update: 'Google search update'
+      },
+      countries: {
+        worldwide: 'גלובלי (כל העולם)',
+        us: 'ארצות הברית',
+        uk: 'בריטניה',
+        il: 'ישראל',
+        de: 'גרמניה',
+        ru: 'רוסיה'
+      },
+      correlationStrength: {
+        strong_pos: 'קורלציה חזקה',
+        moderate_pos: 'קורלציה בינונית',
+        weak_pos: 'קורלציה חלשה',
+        neutral: 'ללא קורלציה מובהקת',
+        negative: 'קורלציה הפוכה'
+      },
+      correlationDesc: {
+        strong_positive: 'סנכרון גבוה: זינוקים בנפח החיפוש חופפים באופן ישיר לסערות תנודתיות בדירוגים.',
+        moderate_positive: 'סנכרון ניכר: נרשמה עלייה מורגשת בחיפושים במקביל לאירועי תנודתיות מרכזיים.',
+        weak_positive: 'סנכרון קל: חפיפה מועטה בלבד בין נפחי החיפוש לתנודות בדירוג.',
+        neutral: 'מדדים בלתי תלויים: לא נמצא קשר סטטיסטי ישיר בין מגמות החיפוש לתנודתיות בטווח זה.',
+        negative: 'מגמות מנוגדות: נרשמה אי-התאמה בין זמני השיא של החיפושים לתנודתיות התוצאות.'
+      },
+      tooltipInterest: 'עניין ב-Google Trends:',
+      volatilityIndex: 'מדד תנודתיות',
+      trendsSearchVolume: 'נפח חיפוש Google Trends',
+      tooltipVolatility: 'מדד תנודתיות',
+      tooltipSearchVolume: 'נפח חיפוש Google Trends',
+      customBadge: 'מותאם',
+      openInGoogleTrends: 'פתח ב-Google Trends הרשמי'
+    },
     eventTable: {
       title: 'יומן אירועים ועדכונים רשמי - Google Search',
       subtitle: 'יומן אירועים ועדכונים רשמי מתוך לוח הבקרה של Google Search Status Dashboard.',
@@ -146,6 +283,43 @@ export const translations: Record<Language, TranslationDict> = {
       noEvents: 'לא דווחו תקלות או עדכוני אלגוריתם רשמיים על ידי Google בטווח הזמן שנבחר.',
       showDetails: 'הצג פרטים',
       hideDetails: 'הסתר פרטים'
+    },
+    alerts: {
+      headerBtn: 'התראות',
+      modalTitle: 'התראות תנודתיות וסערות אלגוריתם',
+      modalSubtitle: 'קבלו התראה מיידית כאשר מדד התנודתיות בתוצאות החיפוש (SERP) חוצה סף קריטי.',
+      browserTitle: 'התראות דפדפן (Browser Push)',
+      browserDesc: 'קבלת התראות ישירות למחשב או לנייד בזמן אמת בעת זיהוי סערת אלגוריתם פעילה.',
+      browserEnableBtn: 'הפעל התראות דפדפן',
+      browserEnabledBadge: 'התראות דפדפן פעילות',
+      browserDeniedBadge: 'התראות חסומות בהגדרות הדפדפן',
+      browserNotSupported: 'הדפדפן אינו תומך בהתראות במכשיר זה.',
+      testAlertBtn: 'שלח התראת בדיקה',
+      testAlertSent: 'התראת בדיקה נשלחה בהצלחה!',
+      emailTitle: 'התראות בדוא"ל',
+      emailDesc: 'קבלת עדכונים ישירות לתיבת הדוא"ל בעת השקת עדכון ליבה או סערת דירוגים חריפה.',
+      emailPlaceholder: 'הזן כתובת דוא"ל לקבלת התראות...',
+      thresholdLabel: 'סף התראה להפעלה',
+      thresholds: {
+        fifty: '> 50% תנודתיות (אי-יציבות מתונה)',
+        sixty: '> 60% תנודתיות (סערת אלגוריתם - מומלץ)',
+        seventyFive: '> 75% תנודתיות (סערה קיצונית)'
+      },
+      subscribeBtn: 'הרשמה לקבלת התראות',
+      subscribedBadge: 'מנוי פעיל',
+      unsubscribeBtn: 'ביטול מנוי',
+      emailSuccess: 'הרשמתך עודכנה בהצלחה! תקבל התראה כאשר התנודתיות תחצה את הסף הנבחר.',
+      emailInvalid: 'נא להזין כתובת דוא"ל תקינה.',
+      testNotificationTitle: 'התראת ניטור אלגוריתם Google (בדיקה)',
+      testNotificationBody: 'התראת הבדיקה נשלחה בהצלחה. תקבל הודעה בעת זיהוי קפיצה בתנודתיות.',
+      highVolatilityAlertTitle: '⚠️ זוהתה סערת אלגוריתם ב-Google!',
+      highVolatilityAlertBody: 'מדד התנודתיות בתוצאות החיפוש זינק ל-{val}%, מעל סף ההתראה שהגדרת.',
+      howItWorksTitle: 'איך התראות עובדות? (מידע טכני מלא)',
+      howItWorksDesc: 'התראות דפדפן (Browser Push) עובדות ישירות דרך ה-Web Notification API של הדפדפן שלך. התראות אימייל נשמרות מקומית באפליקציה (localStorage); בסביבת ייצור (Production), הן מתחברות לשרת Backend או ספק שירותי דוא"ל (כגון SendGrid, Mailgun, AWS SES או שרת SMTP ייעודי) לשיגור התראות אוטומטי.',
+      testEmailBtn: 'בדיקת התראת אימייל (Test)',
+      testEmailModalTitle: 'תצוגה מקדימה: התראת אימייל לדוגמה',
+      testEmailModalClose: 'סגור תצוגה',
+      close: 'סגור'
     },
     faq: {
       title: 'שאלות ותשובות נפוצות על אלגוריתם Google',
@@ -188,6 +362,8 @@ export const translations: Record<Language, TranslationDict> = {
     langLabel: 'Язык',
     by: 'от',
     asOfDate: 'Данные на:',
+    volatilityIndexLabel: 'Индекс волатильности',
+    trendsSearchVolumeLabel: 'Объем поиска Google Trends',
     timeframes: {
       thirtyDays: '30 дней',
       ninetyDays: '90 дней',
@@ -222,6 +398,54 @@ export const translations: Record<Language, TranslationDict> = {
         desc: 'Активно официальное обновление основного алгоритма (Core) или спам-фильтров, либо крупный сбой Google. Высокая турбулентность выдачи.'
       }
     },
+    trends: {
+      toggleLabel: 'Слой Google Trends',
+      overlayTitle: 'Слой поискового интереса Google Trends',
+      overlaySubtitle: 'Сопоставление всплесков поискового интереса к обновлениям алгоритма с пиками турбулентности SERP.',
+      presetsLabel: 'Популярные запросы',
+      customInputPlaceholder: 'Пользовательский запрос (напр., helpful content update)...',
+      customInputLabel: 'Свой запрос',
+      geoLabel: 'Регион',
+      interestAxis: 'Интерес по Google Trends (0-100)',
+      correlationTitle: 'Анализ корреляции',
+      correlationScore: 'Коэффициент Пирсона (r)',
+      presets: {
+        google_algorithm_update: 'Google algorithm update',
+        google_core_update: 'Google core update',
+        serp_volatility: 'SERP volatility',
+        google_ranking_drop: 'Google ranking drop',
+        google_search_update: 'Google search update'
+      },
+      countries: {
+        worldwide: 'Весь мир',
+        us: 'США',
+        uk: 'Великобритания',
+        il: 'Израиль',
+        de: 'Германия',
+        ru: 'Россия'
+      },
+      correlationStrength: {
+        strong_pos: 'Сильная корреляция',
+        moderate_pos: 'Умеренная корреляция',
+        weak_pos: 'Слабая корреляция',
+        neutral: 'Без выраженной связи',
+        negative: 'Обратная динамика'
+      },
+      correlationDesc: {
+        strong_positive: 'Высокая синхронность: Всплески запросов в поиске напрямую совпадают со штормами волатильности.',
+        moderate_positive: 'Заметная синхронность: Фиксируется рост интереса вокруг ключевых обновлений.',
+        weak_positive: 'Слабая синхронность: Незначительное пересечение графиков интереса и колебаний выдачи.',
+        neutral: 'Независимые сигналы: Поисковый интерес не имеет выраженной статистической связи с турбулентностью.',
+        negative: 'Разнонаправленная динамика: Пики запросов и волатильности не совпали в выбранном периоде.'
+      },
+      tooltipInterest: 'Интерес в Google Trends:',
+      volatilityIndex: 'Индекс волатильности',
+      trendsSearchVolume: 'Объем поиска Google Trends',
+      tooltipVolatility: 'Индекс волатильности',
+      tooltipSearchVolume: 'Объем поиска Google Trends',
+      customBadge: 'Пользовательский',
+      openInGoogleTrends: 'Открыть в Google Trends'
+    },
     eventTable: {
       title: 'Реестр сбоев и обновлений Google Search',
       subtitle: 'Официальные данные мониторинга, синхронизируемые с Google Search Status Dashboard.',
@@ -234,6 +458,43 @@ export const translations: Record<Language, TranslationDict> = {
       noEvents: 'За выбранный период времени официальных сбоев или обновлений Google не зафиксировано.',
       showDetails: 'Показать детали',
       hideDetails: 'Скрыть детали'
+    },
+    alerts: {
+      headerBtn: 'Оповещения',
+      modalTitle: 'Оповещения о волатильности SERP',
+      modalSubtitle: 'Получайте мгновенные уведомления, когда индекс волатильности поисковой выдачи превышает заданный порог.',
+      browserTitle: 'Push-уведомления в браузере',
+      browserDesc: 'Получайте оповещения на рабочий стол или смартфон в реальном времени при шторме алгоритма.',
+      browserEnableBtn: 'Включить push-уведомления',
+      browserEnabledBadge: 'Уведомления браузера активны',
+      browserDeniedBadge: 'Уведомления заблокированы в браузере',
+      browserNotSupported: 'Браузер не поддерживает уведомления на этом устройстве.',
+      testAlertBtn: 'Тестовое оповещение',
+      testAlertSent: 'Тестовое оповещение отправлено!',
+      emailTitle: 'Оповещения по электронной почте',
+      emailDesc: 'Получайте оперативные предупреждения на почту при обнаружении официальных обновлений ядра или штормов.',
+      emailPlaceholder: 'Введите рабочий адрес e-mail...',
+      thresholdLabel: 'Порог срабатывания оповещения',
+      thresholds: {
+        fifty: '> 50% волатильности (умеренная турбулентность)',
+        sixty: '> 60% волатильности (шторм алгоритма - рекомендуемый)',
+        seventyFive: '> 75% волатильности (экстремальный шторм)'
+      },
+      subscribeBtn: 'Подписаться на оповещения',
+      subscribedBadge: 'Подписка активна',
+      unsubscribeBtn: 'Отписаться',
+      emailSuccess: 'Подписка успешно оформлена! Вы получите уведомление при превышении выбранного порога.',
+      emailInvalid: 'Пожалуйста, введите корректный адрес электронной почты.',
+      testNotificationTitle: 'Радар алгоритмов Google (Тест)',
+      testNotificationBody: 'Тестовое уведомление доставлено. Вы будете предупреждены при резких скачках турбулентности.',
+      highVolatilityAlertTitle: '⚠️ Обнаружен шторм алгоритма Google!',
+      highVolatilityAlertBody: 'Текущий индекс волатильности подскочил до {val}%, превысив ваш порог срабатывания.',
+      howItWorksTitle: 'Как работают оповещения?',
+      howItWorksDesc: 'Push-уведомления работают напрямую через встроенный браузерный Notification API. Оповещения по email сохраняют ваши настройки в локальном хранилище; для реальной отправки в production подключается почтовый сервис (SMTP, SendGrid, Mailgun или Amazon SES) на серверной стороне.',
+      testEmailBtn: 'Тестовое письмо (Test)',
+      testEmailModalTitle: 'Предпросмотр email-оповещения',
+      testEmailModalClose: 'Закрыть предпросмотр',
+      close: 'Закрыть'
     },
     faq: {
       title: 'Часто задаваемые вопросы об алгоритмах Google',

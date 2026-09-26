@@ -6,24 +6,14 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Activity,
-  AlertTriangle,
-  CheckCircle,
-  HelpCircle,
   Calendar,
   Layers,
   ChevronDown,
   ChevronUp,
-  Search,
   ShieldAlert,
-  Info,
-  TrendingUp,
-  Zap,
-  SlidersHorizontal,
   Radio,
-  Clock,
-  Sparkles,
-  Filter
+  CheckCircle,
+  HelpCircle
 } from 'lucide-react';
 import { Language, NormalizedIncident, VolatilityPoint } from './types';
 import { translations } from './translations';
@@ -194,7 +184,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] selection:bg-blue-100 selection:text-blue-900 font-sans relative overflow-x-hidden">
       
-      {/* Radiant ambient glow at top for million-dollar software depth */}
+      {/* Radiant ambient glow at top for executive software depth */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[480px] bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(37,99,235,0.12),rgba(255,255,255,0))] pointer-events-none z-0"></div>
 
       {/* Top Glassmorphic Executive Navigation Bar */}
@@ -207,15 +197,28 @@ export default function App() {
               {/* Google 4-Color Radar Icon Badge with glowing drop shadow */}
               <div className="h-10 w-10 rounded-2xl bg-white border border-slate-200/90 flex items-center justify-center shrink-0 shadow-md shadow-slate-200/60 relative group hover:border-blue-400 transition-colors">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2C6.48 2 2 6.48 2 12" stroke="#EA4335" strokeWidth="2.5" strokeLinecap="round"/>
-                  <path d="M22 12C22 6.48 17.52 2 12 2" stroke="#4285F4" strokeWidth="2.5" strokeLinecap="round"/>
-                  <path d="M2 12C2 17.52 6.48 22 12 22" stroke="#FBBC04" strokeWidth="2.5" strokeLinecap="round"/>
-                  <path d="M12 22C17.52 22 22 17.52 22 12" stroke="#34A853" strokeWidth="2.5" strokeLinecap="round"/>
-                  <circle cx="12" cy="12" r="3.5" fill="#4285F4"/>
+                  {/* Google 'G' official 4-color path representation */}
+                  <path
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    fill="#4285F4"
+                  />
+                  <path
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    fill="#34A853"
+                  />
+                  <path
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                    fill="#FBBC05"
+                  />
+                  <path
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                    fill="#EA4335"
+                  />
                 </svg>
               </div>
-              <div className="flex flex-col justify-center">
-                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2">
                   <h1 className="text-base sm:text-lg font-heading font-bold text-slate-900 tracking-tight leading-tight">
                     {t.title}
                   </h1>
@@ -234,7 +237,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* Right Action Bar - Dynamic Data Freshness / Update Date Pill */}
+            {/* Right Action Bar - Dynamic Data Freshness */}
             <div className="flex items-center gap-2 sm:gap-3">
               <div
                 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 border border-slate-200/90 text-slate-700 shadow-2xs shrink-0 select-none"
@@ -341,102 +344,48 @@ export default function App() {
                 </span>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* Statistical Overview Hud Cards with Vibrant Accents */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="stats-hud">
-          
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] hover:border-blue-300 hover:shadow-[0_12px_28px_-6px_rgba(37,99,235,0.12)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between gap-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-sans text-slate-500 font-bold uppercase tracking-wider">
-                {lang === 'he' ? 'ממוצע תנודתיות' : lang === 'ru' ? 'СРЕДНЯЯ ВОЛАТИЛЬНОСТЬ' : 'Average Volatility'}
+          </div>
+
+          {/* Quick Analytical Metric Pill Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-6 pt-6 border-t border-slate-200/80">
+            <div className="bg-white/80 backdrop-blur-xs p-3.5 rounded-2xl border border-slate-200/80 flex flex-col gap-1 shadow-2xs">
+              <span className="text-[11px] font-semibold text-slate-500 tracking-wide">
+                {timeframe}D {lang === 'he' ? 'ממוצע תקופתי' : lang === 'ru' ? 'Среднее за период' : 'Average Volatility'}
               </span>
-              <div className="p-2.5 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-md shadow-blue-500/25">
-                <TrendingUp className="h-4 w-4" />
-              </div>
-            </div>
-            <div>
-              <span className="text-3xl sm:text-4xl font-extrabold font-mono text-slate-900 tracking-tight block">
+              <span className="text-lg font-bold font-mono text-slate-900">
                 {avgVolatility.toFixed(1)}%
               </span>
-              <div className="w-full bg-slate-100 h-2.5 rounded-full mt-3 overflow-hidden p-0.5 border border-slate-200/60">
-                <div 
-                  className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500 shadow-xs shadow-blue-500/30" 
-                  style={{ width: `${Math.min(100, avgVolatility)}%` }} 
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] hover:border-amber-300 hover:shadow-[0_12px_28px_-6px_rgba(245,158,11,0.12)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between gap-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-sans text-slate-500 font-bold uppercase tracking-wider">
-                {lang === 'he' ? 'שיא תנודתיות' : lang === 'ru' ? 'ПИКОВАЯ ВОЛАТИЛЬНОСТЬ' : 'Peak Volatility'}
-              </span>
-              <div className={`p-2.5 rounded-2xl ${
-                maxPoint.metricValue > 60 
-                  ? 'bg-gradient-to-br from-rose-500 to-red-600 text-white shadow-md shadow-rose-500/25' 
-                  : 'bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/25'
-              }`}>
-                <Zap className="h-4 w-4" />
-              </div>
-            </div>
-            <div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-3xl sm:text-4xl font-extrabold font-mono text-slate-900 tracking-tight">
-                  {maxPoint.metricValue}%
-                </span>
-                <span className="text-[11px] font-mono text-amber-900 font-bold bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/80">
-                  {maxPoint.date instanceof Date ? maxPoint.date.toLocaleDateString(lang === 'en' ? 'en-US' : lang === 'he' ? 'he-IL' : 'ru-RU', { month: 'short', day: 'numeric' }) : ''}
-                </span>
-              </div>
-              <div className="w-full bg-slate-100 h-2.5 rounded-full mt-3 overflow-hidden p-0.5 border border-slate-200/60">
-                <div 
-                  className={`h-full rounded-full transition-all duration-500 shadow-xs ${
-                    maxPoint.metricValue > 60 
-                      ? 'bg-gradient-to-r from-rose-500 to-red-600 shadow-rose-500/30' 
-                      : 'bg-gradient-to-r from-amber-500 to-orange-500 shadow-amber-500/30'
-                  }`} 
-                  style={{ width: `${Math.min(100, maxPoint.metricValue)}%` }} 
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] hover:border-rose-300 hover:shadow-[0_12px_28px_-6px_rgba(239,68,68,0.12)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between gap-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-sans text-slate-500 font-bold uppercase tracking-wider">
-                {lang === 'he' ? 'עדכוני ליבה רשמיים' : lang === 'ru' ? 'ОСНОВНЫЕ ОБНОВЛЕНИЯ' : 'Core Algorithmic Updates'}
-              </span>
-              <div className="p-2.5 rounded-2xl bg-gradient-to-br from-rose-500 to-red-600 text-white shadow-md shadow-rose-500/25">
-                <ShieldAlert className="h-4 w-4" />
-              </div>
-            </div>
-            <div>
-              <span className="text-3xl sm:text-4xl font-extrabold font-mono text-slate-900 tracking-tight block">
-                {coreUpdatesCount} <span className="text-xs font-sans font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">{isRtl ? 'עדכונים' : lang === 'ru' ? 'обновлений' : 'updates'}</span>
-              </span>
-              <p className="text-[11px] text-slate-500 mt-2 font-medium">
-                {lang === 'he' ? 'מתוך לוח הבקרה הרשמי של Google' : lang === 'ru' ? 'По данным Google Search Status' : 'From official status dashboard'}
+              <p className="text-[10px] text-slate-400">
+                {lang === 'he' ? 'בסיס סטטיסטי לחלון הזמן' : lang === 'ru' ? 'Базовый уровень выборки' : 'Timeframe historical baseline'}
               </p>
             </div>
-          </div>
 
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] hover:border-emerald-300 hover:shadow-[0_12px_28px_-6px_rgba(16,185,129,0.12)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between gap-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-sans text-slate-500 font-bold uppercase tracking-wider">
-                {lang === 'he' ? 'תקלות מערכת ותשתית' : lang === 'ru' ? 'ТЕХНИЧЕСКИЕ СБОИ' : 'System Incidents'}
+            <div className="bg-white/80 backdrop-blur-xs p-3.5 rounded-2xl border border-slate-200/80 flex flex-col gap-1 shadow-2xs">
+              <span className="text-[11px] font-semibold text-slate-500 tracking-wide">
+                {lang === 'he' ? 'שיא תנודתיות בתקופה' : lang === 'ru' ? 'Пик волатильности' : 'Peak Turbulence Spike'}
               </span>
-              <div className="p-2.5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/25">
-                <Layers className="h-4 w-4" />
+              <div className="flex items-baseline gap-2">
+                <span className="text-lg font-bold font-mono text-rose-600">
+                  {maxPoint.metricValue.toFixed(1)}%
+                </span>
+                <span className="text-[11px] font-mono text-slate-500">
+                  ({maxPoint.date.toLocaleDateString(currentLocale, { month: 'short', day: 'numeric' })})
+                </span>
               </div>
+              <p className="text-[10px] text-slate-400">
+                {lang === 'he' ? 'ההפרעה המקסימלית שנמדדה' : lang === 'ru' ? 'Наибольшее отклонение' : 'Highest recorded volatility'}
+              </p>
             </div>
-            <div>
-              <span className="text-3xl sm:text-4xl font-extrabold font-mono text-slate-900 tracking-tight block">
-                {standardIncidentsCount} <span className="text-xs font-sans font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">{isRtl ? 'תקלות' : lang === 'ru' ? 'инцидентов' : 'alerts'}</span>
+
+            <div className="bg-white/80 backdrop-blur-xs p-3.5 rounded-2xl border border-slate-200/80 flex flex-col gap-1 shadow-2xs">
+              <span className="text-[11px] font-semibold text-slate-500 tracking-wide">
+                {lang === 'he' ? 'אירועי מערכת רשמיים' : lang === 'ru' ? 'Официальные события' : 'Official Google Events'}
               </span>
-              <p className="text-[11px] text-slate-500 mt-2 font-medium">
+              <span className="text-lg font-bold font-mono text-slate-900">
+                {activeTimeframeIncidents.length}
+              </span>
+              <p className="text-[10px] text-slate-400">
                 {lang === 'he' ? 'שירותי דירוג, אינדוקס, סריקה והגשה' : lang === 'ru' ? 'Индексация, сканирование и выдача' : 'Serving, Indexing & Crawling'}
               </p>
             </div>
@@ -447,7 +396,7 @@ export default function App() {
         {/* Dynamic Chart Dashboard Display */}
         <section className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_-6px_rgba(15,23,42,0.06)] flex flex-col gap-6" id="chart-section">
           
-          {/* Chart Header with Timeframe filters and Legend */}
+          {/* Chart Header with Timeframe filters */}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-5">
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2.5">
@@ -461,26 +410,6 @@ export default function App() {
               <p className="text-xs text-slate-500 font-medium select-none">
                 {lang === 'he' ? 'מעקב רציף אחר תנודתיות השוק בהצלבה עם אירועים רשמיים של Google' : lang === 'ru' ? 'Непрерывное отслеживание волатильности в сопоставлении с официальными событиями Google' : 'Continuous market volatility tracked against official Google incidents'}
               </p>
-            </div>
-
-            {/* Custom Vibrant Chart Legend */}
-            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 select-none font-medium">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50/80 border border-emerald-200/60 text-emerald-800">
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-xs shadow-emerald-500/50"></span>
-                <span>{t.volatilityGuide.calm.label || t.volatilityGuide.calm.title.split(' ')[0]}</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50/80 border border-amber-200/60 text-amber-800">
-                <span className="h-2.5 w-2.5 rounded-full bg-amber-500 shadow-xs shadow-amber-500/50"></span>
-                <span>{t.volatilityGuide.volatile.label || t.volatilityGuide.volatile.title.split(' ')[0]}</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50/80 border border-rose-200/60 text-rose-800">
-                <span className="h-2.5 w-2.5 rounded-full bg-rose-500 shadow-xs shadow-rose-500/50"></span>
-                <span>{t.volatilityGuide.storm.label || t.volatilityGuide.storm.title.split(' ')[0]}</span>
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50/80 border border-red-200 text-red-700 font-bold">
-                <span className="h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white shadow-xs shadow-red-600/50"></span>
-                <span>{lang === 'he' ? 'עדכון רשמי של Google' : lang === 'ru' ? 'Обновление Google' : 'Google Update'}</span>
-              </span>
             </div>
 
             {/* Timeframe selector controls */}
@@ -515,9 +444,34 @@ export default function App() {
             </div>
           </div>
 
+          {/* Unified Legend Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600 select-none font-medium">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50/80 border border-emerald-200/60 text-emerald-800">
+                <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-xs shadow-emerald-500/50"></span>
+                <span>{t.volatilityGuide.calm.label || t.volatilityGuide.calm.title.split(' ')[0]}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50/80 border border-amber-200/60 text-amber-800">
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-500 shadow-xs shadow-amber-500/50"></span>
+                <span>{t.volatilityGuide.volatile.label || t.volatilityGuide.volatile.title.split(' ')[0]}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50/80 border border-rose-200/60 text-rose-800">
+                <span className="h-2.5 w-2.5 rounded-full bg-rose-500 shadow-xs shadow-rose-500/50"></span>
+                <span>{t.volatilityGuide.storm.label || t.volatilityGuide.storm.title.split(' ')[0]}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50/80 border border-red-200 text-red-700 font-bold">
+                <span className="h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white shadow-xs shadow-red-600/50"></span>
+                <span>{lang === 'he' ? 'עדכון רשמי של Google' : lang === 'ru' ? 'Обновление Google' : 'Google Update'}</span>
+              </span>
+            </div>
+          </div>
+
           {/* Actual Line Graph Canvas Container */}
-          <div className="w-full h-[320px] sm:h-[400px]">
-            <VolatilityChart points={timeline} lang={lang} />
+          <div className="w-full h-[340px] sm:h-[440px]">
+            <VolatilityChart
+              points={timeline}
+              lang={lang}
+            />
           </div>
 
         </section>
@@ -539,7 +493,7 @@ export default function App() {
                 <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-300/80 px-3 py-0.5 rounded-full shadow-2xs">
                   {t.volatilityGuide.calm.title}
                 </span>
-                <span className="text-xs font-mono font-bold text-emerald-700 bg-white/80 px-2 py-0.5 rounded-md border border-emerald-200/60">{t.volatilityGuide.calm.range}</span>
+                <span className="text-xs font-mono font-bold text-emerald-800 bg-white/80 px-2 py-0.5 rounded-md border border-emerald-200/60">{t.volatilityGuide.calm.range}</span>
               </div>
               <p className="text-xs text-slate-600 font-normal leading-relaxed">
                 {t.volatilityGuide.calm.desc}
@@ -694,8 +648,8 @@ export default function App() {
                   const serviceLabel = t.services[inc.service as keyof typeof t.services] || inc.service;
                   const currentLocale = lang === 'he' ? 'he-IL' : lang === 'ru' ? 'ru-RU' : 'en-US';
                   const dateRangeStr = inc.end
-                    ? `${new Date(inc.begin).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric' })} - ${new Date(inc.end).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric', year: 'numeric' })}`
-                    : `${new Date(inc.begin).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric' })} - ${lang === 'he' ? 'פעיל כעת' : lang === 'ru' ? 'Активно' : 'Active'}`;
+                    ? `${new Date(inc.begin).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric', year: 'numeric' })} - ${new Date(inc.end).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric', year: 'numeric' })}`
+                    : `${new Date(inc.begin).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric', year: 'numeric' })} - ${lang === 'he' ? 'פעיל כעת' : lang === 'ru' ? 'Активно' : 'Active'}`;
 
                   return (
                     <div key={inc.id} className="p-4 flex flex-col gap-2.5 hover:bg-slate-50 transition-colors">
@@ -728,7 +682,7 @@ export default function App() {
                         <span className={`inline-flex items-center gap-1.5 font-bold ${
                           inc.status === 'active' ? 'text-rose-600' : 'text-emerald-700'
                         }`}>
-                          <span className={`h-1.5 w-1.5 rounded-full ${inc.status === 'active' ? 'bg-rose-500 animate-ping' : 'bg-emerald-500'}`}></span>
+                          <span className={`h-1.5 w-1.5 rounded-full ${inc.status === 'active' ? 'bg-rose-500' : 'bg-emerald-500'}`}></span>
                           {inc.status === 'active' ? t.eventTable.statusActive : t.eventTable.statusResolved}
                         </span>
                       </div>
@@ -741,59 +695,56 @@ export default function App() {
           )}
         </section>
 
-        {/* SEO Educational & FAQ Accordion Section */}
+        {/* Informational FAQ Accordion Section */}
         <section className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_-6px_rgba(15,23,42,0.06)] flex flex-col gap-6" id="faq-section">
-          <div className="flex flex-col border-b border-slate-100 pb-5">
-            <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 tracking-tight">
-              {t.faq.title}
-            </h3>
+          <div className="flex flex-col gap-1 border-b border-slate-100 pb-5">
+            <div className="flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-blue-600" />
+              <h3 className="text-base sm:text-lg font-heading font-bold text-slate-900 tracking-tight">
+                {t.faq.title}
+              </h3>
+            </div>
             <p className="text-xs text-slate-500 font-medium">
               {t.faq.subtitle}
             </p>
           </div>
 
           <div className="flex flex-col gap-3">
-            {[1, 2, 3, 4].map((num) => {
-              const qKey = `q${num}` as keyof typeof t.faq;
-              const aKey = `a${num}` as keyof typeof t.faq;
-              const qText = t.faq[qKey];
-              const aText = t.faq[aKey];
-              const isOpen = expandedFaq[num] || false;
-
+            {[
+              { id: 'q1', q: t.faq.q1, a: t.faq.a1 },
+              { id: 'q2', q: t.faq.q2, a: t.faq.a2 },
+              { id: 'q3', q: t.faq.q3, a: t.faq.a3 },
+              { id: 'q4', q: t.faq.q4, a: t.faq.a4 }
+            ].map(({ id, q, a }) => {
+              const isOpen = expandedFaq[id];
               return (
-                <div 
-                  key={num} 
-                  className={`border rounded-2xl overflow-hidden transition-all bg-white shadow-2xs ${
-                    isOpen ? 'border-blue-300 ring-2 ring-blue-500/15' : 'border-slate-200/80 hover:border-slate-300'
-                  }`}
+                <div
+                  key={id}
+                  className="border border-slate-200/90 rounded-2xl overflow-hidden transition-all duration-200 hover:border-slate-300"
                 >
                   <button
                     type="button"
-                    onClick={() => toggleFaq(String(num))}
-                    className="w-full flex items-center justify-between p-4 sm:p-5 text-left rtl:text-right font-semibold text-slate-900 text-sm outline-none hover:bg-slate-50/80 cursor-pointer transition-colors"
+                    onClick={() => toggleFaq(id)}
+                    className="w-full p-4 sm:p-5 flex items-center justify-between text-left rtl:text-right bg-slate-50/50 hover:bg-slate-50 cursor-pointer transition-colors"
                   >
-                    <span className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl transition-colors ${isOpen ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30' : 'bg-slate-100 text-slate-600'}`}>
-                        <HelpCircle className="h-4 w-4 shrink-0" />
-                      </div>
-                      <span className="font-bold text-slate-900 leading-snug">{qText}</span>
+                    <span className="font-heading font-bold text-xs sm:text-sm text-slate-900 tracking-tight">
+                      {q}
                     </span>
-                    {isOpen 
-                      ? <ChevronUp className="h-4 w-4 text-blue-600 shrink-0" /> 
-                      : <ChevronDown className="h-4 w-4 text-slate-400 shrink-0" />
-                    }
+                    <span className="text-slate-400 p-1">
+                      {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    </span>
                   </button>
 
-                  <AnimatePresence initial={false}>
+                  <AnimatePresence>
                     {isOpen && (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
+                        animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <div className="px-5 pb-5 pt-2 text-slate-600 text-xs sm:text-sm font-normal leading-relaxed border-t border-slate-100 bg-slate-50/60">
-                          {aText}
+                        <div className="p-4 sm:p-5 pt-0 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 bg-white">
+                          {a}
                         </div>
                       </motion.div>
                     )}
@@ -806,7 +757,7 @@ export default function App() {
 
       </main>
 
-      {/* Executive Clean Footer */}
+      {/* Global Executive Footer */}
       <footer className="bg-white border-t border-slate-200/90 mt-12 sm:mt-14 select-none relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 font-semibold">
           <div className="flex items-center gap-2.5">
