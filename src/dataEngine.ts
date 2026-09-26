@@ -21,15 +21,51 @@ export interface OfflineIncident {
 
 export const OFFLINE_INCIDENTS: OfflineIncident[] = [
   {
-    id: 'wdAXJk6LRRihEjpzEeWE',
+    id: 'XhUDXP7A67iHCD2kmbVu',
     service: 'Ranking',
-    begin: '2026-05-21T15:40:00+00:00',
+    begin: '2026-09-24T16:15:00+00:00',
     end: null,
     isCoreUpdate: true,
     descriptions: {
-      en: 'May 2026 core update: Released the May 2026 core update. The rollout may take up to 2 weeks to complete.',
-      he: 'עדכון ליבה מאי 2026: שוחרר עדכון הליבה של מאי 2026. פריסת העדכון עשויה להמשך עד שבועיים.',
-      ru: 'Обновление основного алгоритма за май 2026 года: Выпущено основное обновление за май 2026 года. Развертывание может занять до 2 недель.'
+      en: 'September 2026 spam update: Released the September 2026 spam update, which applies globally and to all languages. The rollout may take up to two weeks to complete.',
+      he: 'עדכון ספאם ספטמבר 2026: שוחרר עדכון הספאם של ספטמבר 2026, החל באופן גלובלי ובכל השפות. פריסת העדכון עשויה להימשך עד שבועיים.',
+      ru: 'Обновление алгоритма борьбы со спамом за сентябрь 2026 года: Выпущено обновление алгоритма борьбы со спамом за сентябрь 2026 года, применяемое глобально и для всех языков. Развертывание может занять до двух недель.'
+    }
+  },
+  {
+    id: 'LEubPCm2octf2uMqCFKE',
+    service: 'Ranking',
+    begin: '2026-08-18T16:27:00+00:00',
+    end: '2026-08-21T08:49:00+00:00',
+    isCoreUpdate: true,
+    descriptions: {
+      en: 'August 2026 spam update: The rollout was complete as of August 21, 2026. Released the August 2026 spam update, which applies globally and to all languages. The rollout may take a few days to complete.',
+      he: 'עדכון ספאם אוגוסט 2026: הפריסה הושלמה במלואה ב-21 באוגוסט 2026. שוחרר עדכון הספאם של אוגוסט 2026, החל באופן גלובלי ובכל השפות. פריסת העדכון עשויה להימשך מספר ימים.',
+      ru: 'Обновление алгоритма борьбы со спамом за август 2026 года: Развертывание полностью завершено 21 августа 2026 года. Выпущено обновление алгоритма борьбы со спамом за август 2026 года, применяемое глобально и для всех языков. Развертывание заняло несколько дней.'
+    }
+  },
+  {
+    id: 'YUX1peHev5a4fkxLDiUQ',
+    service: 'Ranking',
+    begin: '2026-06-24T16:00:00+00:00',
+    end: '2026-06-26T17:00:00+00:00',
+    isCoreUpdate: true,
+    descriptions: {
+      en: 'June 2026 spam update: The rollout was complete as of June 26, 2026. Released the June 2026 spam update, which applies globally and to all languages. The rollout may take a few days to complete.',
+      he: 'עדכון ספאם יוני 2026: הפריסה הושלמה במלואה ב-26 ביוני 2026. שוחרר עדכון הספאם של יוני 2026, החל באופן גלובלי ובכל השפות. פריסת העדכון עשויה להימשך מספר ימים.',
+      ru: 'Обновление алгоритма борьбы со спамом за июнь 2026 года: Развертывание полностью завершено 26 июня 2026 года. Выпущено обновление алгоритма борьбы со спамом за июнь 2026 года, применяемое глобально и для всех языков. Развертывание заняло несколько дней.'
+    }
+  },
+  {
+    id: 'wdAXJk6LRRihEjpzEeWE',
+    service: 'Ranking',
+    begin: '2026-05-21T15:40:00+00:00',
+    end: '2026-06-02T12:40:00+00:00',
+    isCoreUpdate: true,
+    descriptions: {
+      en: 'May 2026 core update: The rollout was complete as of June 2, 2026. Released the May 2026 core update. The rollout may take up to 2 weeks to complete.',
+      he: 'עדכון ליבה מאי 2026: הפריסה הושלמה במלואה ב-2 ביוני 2026. שוחרר עדכון הליבה של מאי 2026. פריסת העדכון עשויה להימשך עד שבועיים.',
+      ru: 'Обновление основного алгоритма за май 2026 года: Развертывание полностью завершено 2 июня 2026 года. Выпущено основное обновление за май 2026 года. Развертывание заняло до 2 недель.'
     }
   },
   {
@@ -214,123 +250,202 @@ export function calculateVolatility(date: Date, activeIncidents: NormalizedIncid
   return Number(finalVal.toFixed(1));
 }
 
+const MONTHS_HE: Record<string, string> = {
+  january: 'ינואר', february: 'פברואר', march: 'מרץ', april: 'אפריל',
+  may: 'מאי', june: 'יוני', july: 'יולי', august: 'אוגוסט',
+  september: 'ספטמבר', october: 'אוקטובר', november: 'נובמבר', december: 'דצמבר'
+};
+
+const MONTHS_RU_NOM: Record<string, string> = {
+  january: 'январь', february: 'февраль', march: 'март', april: 'апрель',
+  may: 'май', june: 'июнь', july: 'июль', august: 'август',
+  september: 'сентябрь', october: 'октябрь', november: 'ноябрь', december: 'декабрь'
+};
+
+const MONTHS_RU_GEN: Record<string, string> = {
+  january: 'января', february: 'февраля', march: 'марта', april: 'апреля',
+  may: 'мая', june: 'июня', july: 'июля', august: 'августа',
+  september: 'сентября', october: 'октября', november: 'ноября', december: 'декабря'
+};
+
 /**
- * Translates incident titles/updates into Hebrew and Russian dynamically
+ * Translates incident titles, status updates, and descriptions into fluent,
+ * natural Hebrew and Russian dynamically without fragmented word substitutions.
  */
 export function translateTextAuto(text: string, lang: Language): string {
-  if (lang === 'en') return text;
+  if (lang === 'en' || !text) return text;
 
-  let translated = text;
+  let res = text.trim();
 
-  // Hebrew Translation Mapping
+  // Hebrew Translation Engine
   if (lang === 'he') {
-    const heMap: Array<[RegExp, string]> = [
-      [/Released the May 2026 core update/gi, 'שוחרר עדכון הליבה של מאי 2026'],
-      [/Released the March 2026 core update/gi, 'שוחרר עדכון הליבה של מרץ 2026'],
-      [/Released the March 2026 spam update/gi, 'שוחרר עדכון הספאם של מרץ 2026'],
-      [/Released the February 2026 Discover core update/gi, 'שוחרר עדכון אלגוריתם Discover של פברואר 2026'],
-      [/Released the December 2025 core update/gi, 'שוחרר עדכון הליבה של דצמבר 2025'],
-      [/Released the August 2025 spam update/gi, 'שוחרר עדכון הספאם של אוגוסט 2025'],
-      [/Released the June 2025 core update/gi, 'שוחרר עדכון הליבה של יוני 2025'],
-      
-      [/May 2026 core update/gi, 'עדכון ליבה מאי 2026'],
-      [/March 2026 core update/gi, 'עדכון ליבה מרץ 2026'],
-      [/March 2026 spam update/gi, 'עדכון ספאם מרץ 2026'],
-      [/February 2026 Discover update/gi, 'עדכון Discover פברואר 2026'],
-      [/December 2025 core update/gi, 'עדכון ליבה דצמבר 2025'],
-      [/August 2025 spam update/gi, 'עדכון ספאם אוגוסט 2025'],
-      [/June 2025 core update/gi, 'עדכון ליבה יוני 2025'],
+    // 1. Completion date patterns (e.g. "The rollout was complete as of August 21, 2026.")
+    res = res.replace(/The rollout was complete(?:d)? as of ([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})\.?/gi, (_, m, d, y) => {
+      const monthHe = MONTHS_HE[m.toLowerCase()] || m;
+      return `הפריסה הושלמה במלואה ב-${d} ב${monthHe} ${y}.`;
+    });
+    res = res.replace(/The rollout was complete(?:d)? as of (\d{1,2})\s+([A-Za-z]+),?\s+(\d{4})\.?/gi, (_, d, m, y) => {
+      const monthHe = MONTHS_HE[m.toLowerCase()] || m;
+      return `הפריסה הושלמה במלואה ב-${d} ב${monthHe} ${y}.`;
+    });
 
-      [/The rollout may take up to 2 weeks to complete/gi, 'הפריסה עשויה להימשך עד שבועיים'],
-      [/The rollout was complete as of April 8, 2026/gi, 'הפריסה הושלמה במלואה ב-8 באפריל 2026'],
-      [/The rollout was complete as of March 25, 2026/gi, 'הפריסה הושלמה במלואה ב-25 במרץ 2026'],
-      [/The rollout was complete as of February 27, 2026/gi, 'הפריסה הושלמה במלואה ב-27 בפברואר 2026'],
-      [/The rollout was complete as of December 29, 2025/gi, 'הפריסה הושלמה במלואה ב-29 בדצמבר 2025'],
-      [/The rollout was complete as of September 22, 2025/gi, 'הפריסה הושלמה במלואה ב-22 בספטמבר 2025'],
-      [/The rollout was complete as of July 17, 2025/gi, 'הפריסה הושלמה במלואה ב-17 ביולי 2025'],
-      [/The rollout may take a few days to complete/gi, 'הפריסה עשויה להימשך מספר ימים'],
-      [/The rollout may take up to 3 weeks to complete/gi, 'הפריסה עשויה להימשך עד 3 שבועות'],
+    // 2. Release announcement patterns (e.g. "Released the September 2026 spam update")
+    res = res.replace(/Released the ([A-Za-z]+)\s+(\d{4})\s+(Discover core update|Discover update|core update|spam update|reviews update|product reviews update|helpful content update)/gi, (_, m, y, type) => {
+      const monthHe = MONTHS_HE[m.toLowerCase()] || m;
+      const typeLower = type.toLowerCase();
+      let typeHe = 'עדכון';
+      if (typeLower.includes('core')) typeHe = 'עדכון ליבה';
+      else if (typeLower.includes('spam')) typeHe = 'עדכון ספאם';
+      else if (typeLower.includes('discover')) typeHe = 'עדכון Discover';
+      else if (typeLower.includes('review')) typeHe = 'עדכון ביקורות';
+      else if (typeLower.includes('helpful')) typeHe = 'עדכון תוכן מועיל';
+      return `שוחרר ${typeHe} של ${monthHe} ${y}`;
+    });
 
+    // 3. Update titles (e.g. "September 2026 spam update", "May 2026 core update")
+    res = res.replace(/\b([A-Za-z]+)\s+(\d{4})\s+(Discover core update|Discover update|core update|spam update|reviews update|product reviews update|helpful content update)\b/gi, (_, m, y, type) => {
+      const monthHe = MONTHS_HE[m.toLowerCase()] || m;
+      const typeLower = type.toLowerCase();
+      let typeHe = 'עדכון';
+      if (typeLower.includes('core')) typeHe = 'עדכון ליבה';
+      else if (typeLower.includes('spam')) typeHe = 'עדכון ספאם';
+      else if (typeLower.includes('discover')) typeHe = 'עדכון Discover';
+      else if (typeLower.includes('review')) typeHe = 'עדכון ביקורות';
+      else if (typeLower.includes('helpful')) typeHe = 'עדכון תוכן מועיל';
+      return `${typeHe} ${monthHe} ${y}`;
+    });
+
+    // 4. Exact sentences & common status clauses
+    const phrases: Array<[RegExp, string]> = [
+      [/which applies globally and to all languages/gi, 'החל באופן גלובלי ובכל השפות'],
+      [/The rollout may take up to two weeks to complete\.?/gi, 'הפריסה עשויה להימשך עד שבועיים.'],
+      [/The rollout may take up to 2 weeks to complete\.?/gi, 'הפריסה עשויה להימשך עד שבועיים.'],
+      [/The rollout may take up to 3 weeks to complete\.?/gi, 'הפריסה עשויה להימשך עד 3 שבועות.'],
+      [/The rollout may take up to 4 weeks to complete\.?/gi, 'הפריסה עשויה להימשך עד 4 שבועות.'],
+      [/The rollout may take a few days to complete\.?/gi, 'הפריסה עשויה להימשך מספר ימים.'],
+      [/The rollout may take several weeks to complete\.?/gi, 'הפריסה עשויה להימשך מספר שבועות.'],
+      [/The rollout may take up to (\d+) weeks? to complete\.?/gi, 'הפריסה עשויה להימשך עד $1 שבועות.'],
+      [/The rollout is complete\.?/gi, 'הפריסה הושלמה במלואה.'],
+      [/Rollout complete\.?/gi, 'הפריסה הושלמה.'],
+      [/Serving was experiencing an issue\.?/gi, 'נרשמה תקלה במערכת הגשת התוצאות (Serving).'],
       [/Serving was experiencing an issue/gi, 'נרשמה תקלה במערכת הגשת התוצאות (Serving)'],
-      [/We fixed the issue with serving search results. There will be no more updates/gi, 'תוקנה התקלה בהגשת תוצאות החיפוש. לא יפורסמו עדכונים נוספים בנושא'],
-      [/Serving experienced an issue/gi, 'נרשמה תקלה במערכת הגשת התוצאות (Serving)'],
-      [/The issue with serving has resolved itself. There will be no more updates/gi, 'התקלה במערכת הגשת התוצאות נפתרה. לא יפורסמו עדכונים נוספים בנושא'],
-      [/There's an ongoing data center issue that may impact serving of some pages in some locales. We're working on identifying the root cause/gi, 'קיימת תקלה מתמשכת במרכז נתונים שעשויה להשפיע על הגשת דפים מסוימים באזורים מסוימים. אנו פועלים לזיהוי ופתרון סיבת השורש'],
-      [/There was an issue with indexing fresh content in Google Search. Sites may have experienced slower than usual indexing times/gi, 'נרשמה תקלה באינדוקס תוכן חדש ב-Google Search. אתרים עשויים היו לחוות זמני אינדוקס איטיים מהרגיל'],
-      [/We fixed the issue with indexing fresh content. There will be no more updates/gi, 'תוקנה התקלה באינדוקס תוכן חדש. לא יפורסמו עדכונים נוספים בנושא'],
-      [/There's an ongoing issue with serving Google Lens, Discover, and Voice Search results that's affecting some users. We're working on identifying the root cause/gi, 'קיימת תקלה מתמשכת בהגשת תוצאות ב-Google Lens, Discover ובחיפוש קולי המשפיעה על חלק מהמשתמשים. אנו פועלים לבירור סיבת השורש'],
-      [/We fixed the issue with serving in Google Lens, Discover, and Voice Search. There will be no more updates/gi, 'תוקנה תקלת ההגשה ב-Google Lens, Discover ובחיפוש קולי. לא יפורסמו עדכונים נוספים בנושא'],
-
-      [/released/gi, 'שוחרר'],
-      [/rollout/gi, 'פריסה'],
-      [/complete as of/gi, 'הושלם החל מ-'],
-      [/complete/gi, 'הושלם'],
-      [/indexing issue/gi, 'תקלת אינדוקס (Indexing)'],
-      [/serving issue/gi, 'תקלת הגשת תוצאות (Serving)'],
-      [/ranking issue/gi, 'תקלת דירוג (Ranking)'],
-      [/crawling issue/gi, 'תקלת סריקה וזחילה (Crawling)']
+      [/Serving is experiencing an ongoing issue\.?/gi, 'קיימת תקלה מתמשכת במערכת הגשת התוצאות (Serving).'],
+      [/Serving is experiencing an ongoing issue/gi, 'קיימת תקלה מתמשכת במערכת הגשת התוצאות (Serving)'],
+      [/Serving experienced an issue\.?/gi, 'נרשמה תקלה במערכת הגשת התוצאות (Serving).'],
+      [/Indexing was experiencing an issue\.?/gi, 'נרשמה תקלה במערכת האינדוקס (Indexing).'],
+      [/Ranking was experiencing an issue\.?/gi, 'נרשמה תקלה באלגוריתם הדירוג (Ranking).'],
+      [/Crawling was experiencing an issue\.?/gi, 'נרשמה תקלה בסריקה וזחילה (Crawling).'],
+      [/We fixed the issue with serving search results\. There will be no more updates\.?/gi, 'תוקנה התקלה בהגשת תוצאות החיפוש. לא יפורסמו עדכונים נוספים בנושא.'],
+      [/We fixed the issue with serving search results\.?/gi, 'תוקנה התקלה בהגשת תוצאות החיפוש.'],
+      [/The issue with serving has resolved itself\. There will be no more updates\.?/gi, 'התקלה בהגשת תוצאות החיפוש נפתרה מעצמה. לא יפורסמו עדכונים נוספים בנושא.'],
+      [/The issue with serving has resolved itself\.?/gi, 'התקלה בהגשת תוצאות החיפוש נפתרה.'],
+      [/We've identified an issue with serving and have been working on a fix\.?/gi, 'זיהינו תקלה בהגשת תוצאות החיפוש ואנו פועלים לפתרונה.'],
+      [/There's an ongoing data center issue that may impact serving of some pages in some locales\.?/gi, 'קיימת תקלה מתמשכת במרכז נתונים שעשויה להשפיע על הצגת דפים באזורים מסוימים.'],
+      [/We're working on identifying the root cause\.?/gi, 'אנו פועלים לאיתור סיבת השורש.'],
+      [/The next update will be within (\d+) hours\.?/gi, 'העדכון הבא יימסר בתוך $1 שעות.'],
+      [/There will be no more updates\.?/gi, 'לא יפורסמו עדכונים נוספים בנושא.'],
+      [/for English language users in the US \(will look to expand it to all countries and languages in the future\)/gi, 'עבור משתמשים בשפה האנגלית בארה״ב (מתוכננת הרחבה למדינות ושפות נוספות בעתיד)'],
+      [/This update is designed to improve the quality of Discover overall\.?/gi, 'עדכון זה נועד לשפר את איכות התוכן ב-Discover באופן כללי.'],
+      [/Our guidance about general core updates and Discover applies\.?/gi, 'ההנחיות הכלליות של Google לגבי עדכוני ליבה ו-Discover תקפות גם כאן.'],
+      [/Our guidance about general core updates applies\.?/gi, 'ההנחיות הכלליות של Google לגבי עדכוני ליבה תקפות גם כאן.'],
+      [/There was an issue with indexing fresh content in Google Search\. Sites may have experienced slower than usual indexing times\.?/gi, 'נרשמה תקלה באינדוקס תוכן חדש ב-Google Search. אתרים עשויים היו לחוות עיכובים באינדוקס.'],
+      [/We fixed the issue with indexing fresh content\. There will be no more updates\.?/gi, 'תוקנה התקלה באינדוקס תוכן חדש. לא יפורסמו עדכונים נוספים בנושא.'],
+      [/There's an ongoing issue with serving Google Lens, Discover, and Voice Search results that's affecting some users\.?/gi, 'קיימת תקלה בהגשת תוצאות ב-Google Lens, Discover וחיפוש קולי המשפיעה על חלק מהמשתמשים.'],
+      [/We fixed the issue with serving in Google Lens, Discover, and Voice Search\. There will be no more updates\.?/gi, 'תוקנה תקלת ההגשה ב-Google Lens, Discover ובחיפוש קולי. לא יפורסמו עדכונים נוספים בנושא.']
     ];
 
-    for (const [regex, replacement] of heMap) {
-      translated = translated.replace(regex, replacement);
+    for (const [pattern, rep] of phrases) {
+      res = res.replace(pattern, rep);
     }
   }
 
-  // Russian Translation Mapping
+  // Russian Translation Engine
   if (lang === 'ru') {
-    const ruMap: Array<[RegExp, string]> = [
-      [/Released the May 2026 core update/gi, 'Выпущено основное обновление алгоритма (Core Update) за май 2026 года'],
-      [/Released the March 2026 core update/gi, 'Выпущено основное обновление алгоритма (Core Update) за март 2026 года'],
-      [/Released the March 2026 spam update/gi, 'Выпущено обновление алгоритма борьбы со спамом за март 2026 года'],
-      [/Released the February 2026 Discover core update/gi, 'Выпущено обновление алгоритма рекомендаций Discover за февраль 2026 года'],
-      [/Released the December 2025 core update/gi, 'Выпущено основное обновление алгоритма (Core Update) за декабрь 2025 года'],
-      [/Released the August 2025 spam update/gi, 'Выпущено обновление алгоритма борьбы со спамом за август 2025 года'],
-      [/Released the June 2025 core update/gi, 'Выпущено основное обновление алгоритма (Core Update) за июнь 2025 года'],
-      
-      [/May 2026 core update/gi, 'Обновление основного алгоритма за май 2026 года'],
-      [/March 2026 core update/gi, 'Обновление основного алгоритма за март 2026 года'],
-      [/March 2026 spam update/gi, 'Обновление алгоритма борьбы со спамом за март 2026 года'],
-      [/February 2026 Discover update/gi, 'Обновление Discover за февраль 2026 года'],
-      [/December 2025 core update/gi, 'Обновление основного алгоритма за декабрь 2025 года'],
-      [/August 2025 spam update/gi, 'Обновление алгоритма борьбы со спамом за август 2025 года'],
-      [/June 2025 core update/gi, 'Обновление основного алгоритма за июнь 2025 года'],
+    // 1. Completion date patterns
+    res = res.replace(/The rollout was complete(?:d)? as of ([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})\.?/gi, (_, m, d, y) => {
+      const monthRu = MONTHS_RU_GEN[m.toLowerCase()] || m;
+      return `Развертывание полностью завершено ${d} ${monthRu} ${y} года.`;
+    });
+    res = res.replace(/The rollout was complete(?:d)? as of (\d{1,2})\s+([A-Za-z]+),?\s+(\d{4})\.?/gi, (_, d, m, y) => {
+      const monthRu = MONTHS_RU_GEN[m.toLowerCase()] || m;
+      return `Развертывание полностью завершено ${d} ${monthRu} ${y} года.`;
+    });
 
-      [/The rollout may take up to 2 weeks to complete/gi, 'Развертывание обновления может занять до 2 недель'],
-      [/The rollout was complete as of April 8, 2026/gi, 'Развертывание полностью завершено 8 апреля 2026 года'],
-      [/The rollout was complete as of March 25, 2026/gi, 'Развертывание полностью завершено 25 марта 2026 года'],
-      [/The rollout was complete as of February 27, 2026/gi, 'Развертывание полностью завершено 27 февраля 2026 года'],
-      [/The rollout was complete as of December 29, 2025/gi, 'Развертывание полностью завершено 29 декабря 2025 года'],
-      [/The rollout was complete as of September 22, 2025/gi, 'Развертывание полностью завершено 22 сентября 2025 года'],
-      [/The rollout was complete as of July 17, 2025/gi, 'Развертывание полностью завершено 17 июля 2025 года'],
-      [/The rollout may take a few days to complete/gi, 'Развертывание может занять несколько дней'],
-      [/The rollout may take up to 3 weeks to complete/gi, 'Развертывание может занять до 3 недель'],
+    // 2. Release announcement patterns
+    res = res.replace(/Released the ([A-Za-z]+)\s+(\d{4})\s+(Discover core update|Discover update|core update|spam update|reviews update|product reviews update|helpful content update)/gi, (_, m, y, type) => {
+      const monthRu = MONTHS_RU_NOM[m.toLowerCase()] || m;
+      const typeLower = type.toLowerCase();
+      let typeRu = 'обновление алгоритма';
+      if (typeLower.includes('core')) typeRu = 'основное обновление алгоритма (Core Update)';
+      else if (typeLower.includes('spam')) typeRu = 'обновление алгоритма борьбы со спамом';
+      else if (typeLower.includes('discover')) typeRu = 'обновление рекомендаций Discover';
+      else if (typeLower.includes('review')) typeRu = 'обновление отзывов';
+      else if (typeLower.includes('helpful')) typeRu = 'обновление полезного контента';
+      return `Выпущено ${typeRu} за ${monthRu} ${y} года`;
+    });
 
-      [/Serving was experiencing an issue/gi, 'В системе выдачи результатов (Serving) наблюдался технический сбой'],
-      [/We fixed the issue with serving search results. There will be no more updates/gi, 'Проблема с отображением результатов поиска устранена. Дальнейших обновлений статуса не планируется'],
-      [/Serving experienced an issue/gi, 'В системе выдачи результатов (Serving) произошел сбой'],
-      [/The issue with serving has resolved itself. There will be no more updates/gi, 'Сбой в системе выдачи результатов устранен. Дальнейших обновлений статуса не планируется'],
-      [/There's an ongoing data center issue that may impact serving of some pages in some locales. We're working on identifying the root cause/gi, 'Зафиксирован технический сбой в дата-центре, который может влиять на выдачу страниц в некоторых регионах. Специалисты устанавливают первопричину'],
-      [/There was an issue with indexing fresh content in Google Search. Sites may have experienced slower than usual indexing times/gi, 'Возник сбой при индексации свежего контента в Google Search. Сайты могли испытывать задержки при индексации'],
-      [/We fixed the issue with indexing fresh content. There will be no more updates/gi, 'Проблема с индексацией свежего контента полностью устранена. Дальнейших сообщений не планируется'],
-      [/There's an ongoing issue with serving Google Lens, Discover, and Voice Search results that's affecting some users. We're working on identifying the root cause/gi, 'Зафиксирован сбой в работе сервисов Google Lens, Discover и голосового поиска. Ведутся работы по устранению первопричины'],
-      [/We fixed the issue with serving in Google Lens, Discover, and Voice Search. There will be no more updates/gi, 'Проблема с отображением результатов в Google Lens, Discover и голосовом поиске устранена. Дальнейших сообщений не планируется'],
+    // 3. Update titles
+    res = res.replace(/\b([A-Za-z]+)\s+(\d{4})\s+(Discover core update|Discover update|core update|spam update|reviews update|product reviews update|helpful content update)\b/gi, (_, m, y, type) => {
+      const monthRu = MONTHS_RU_NOM[m.toLowerCase()] || m;
+      const typeLower = type.toLowerCase();
+      let typeRu = 'Обновление';
+      if (typeLower.includes('core')) typeRu = 'Основное обновление алгоритма';
+      else if (typeLower.includes('spam')) typeRu = 'Обновление алгоритма борьбы со спамом';
+      else if (typeLower.includes('discover')) typeRu = 'Обновление Discover';
+      else if (typeLower.includes('review')) typeRu = 'Обновление отзывов';
+      else if (typeLower.includes('helpful')) typeRu = 'Обновление полезного контента';
+      return `${typeRu} за ${monthRu} ${y} года`;
+    });
 
-      [/released/gi, 'Выпущено'],
-      [/rollout/gi, 'развертывание'],
-      [/complete as of/gi, 'завершено на момент'],
-      [/complete/gi, 'завершено'],
-      [/indexing issue/gi, 'сбой индексации (Indexing)'],
-      [/serving issue/gi, 'сбой выдачи результатов (Serving)'],
-      [/ranking issue/gi, 'сбой ранжирования (Ranking)'],
-      [/crawling issue/gi, 'сбой сканирования (Crawling)']
+    // 4. Exact sentences & common status clauses
+    const phrases: Array<[RegExp, string]> = [
+      [/which applies globally and to all languages/gi, 'применяемое глобально и для всех языков'],
+      [/The rollout may take up to two weeks to complete\.?/gi, 'Развертывание может занять до 2 недель.'],
+      [/The rollout may take up to 2 weeks to complete\.?/gi, 'Развертывание может занять до 2 недель.'],
+      [/The rollout may take up to 3 weeks to complete\.?/gi, 'Развертывание может занять до 3 недель.'],
+      [/The rollout may take up to 4 weeks to complete\.?/gi, 'Развертывание может занять до 4 недель.'],
+      [/The rollout may take a few days to complete\.?/gi, 'Развертывание может занять несколько дней.'],
+      [/The rollout may take several weeks to complete\.?/gi, 'Развертывание может занять несколько недель.'],
+      [/The rollout may take up to (\d+) weeks? to complete\.?/gi, 'Развертывание может занять до $1 недель.'],
+      [/The rollout is complete\.?/gi, 'Развертывание полностью завершено.'],
+      [/Rollout complete\.?/gi, 'Развертывание завершено.'],
+      [/Serving was experiencing an issue\.?/gi, 'В системе выдачи результатов (Serving) наблюдался сбой.'],
+      [/Serving was experiencing an issue/gi, 'В системе выдачи результатов (Serving) наблюдался сбой'],
+      [/Serving is experiencing an ongoing issue\.?/gi, 'Зафиксирован сбой в системе выдачи результатов (Serving).'],
+      [/Serving is experiencing an ongoing issue/gi, 'Зафиксирован сбой в системе выдачи результатов (Serving)'],
+      [/Serving experienced an issue\.?/gi, 'В системе выдачи результатов (Serving) произошел сбой.'],
+      [/Indexing was experiencing an issue\.?/gi, 'Сбой в системе индексации (Indexing).'],
+      [/Ranking was experiencing an issue\.?/gi, 'Сбой в алгоритме ранжирования (Ranking).'],
+      [/Crawling was experiencing an issue\.?/gi, 'Сбой в системе сканирования (Crawling).'],
+      [/We fixed the issue with serving search results\. There will be no more updates\.?/gi, 'Проблема с отображением результатов поиска устранена. Дальнейших сообщений не планируется.'],
+      [/We fixed the issue with serving search results\.?/gi, 'Проблема с отображением результатов поиска устранена.'],
+      [/The issue with serving has resolved itself\. There will be no more updates\.?/gi, 'Сбой в системе выдачи результатов устранен самостоятельно. Дальнейших сообщений не планируется.'],
+      [/The issue with serving has resolved itself\.?/gi, 'Сбой в системе выдачи результатов устранен самостоятельно.'],
+      [/We've identified an issue with serving and have been working on a fix\.?/gi, 'Мы выявили проблему в системе выдачи результатов и работаем над ее устранением.'],
+      [/There's an ongoing data center issue that may impact serving of some pages in some locales\.?/gi, 'Зафиксирован сбой в дата-центре, который может влиять на выдачу страниц в некоторых регионах.'],
+      [/We're working on identifying the root cause\.?/gi, 'Мы работаем над установлением первопричины.'],
+      [/The next update will be within (\d+) hours\.?/gi, 'Следующее обновление статуса ожидается в течение $1 часов.'],
+      [/There will be no more updates\.?/gi, 'Дальнейших сообщений не планируется.'],
+      [/for English language users in the US \(will look to expand it to all countries and languages in the future\)/gi, 'для англоязычных пользователей в США (в будущем планируется расширение на другие страны и языки)'],
+      [/This update is designed to improve the quality of Discover overall\.?/gi, 'Это обновление направлено на повышение общего качества Discover.'],
+      [/Our guidance about general core updates and Discover applies\.?/gi, 'Применяются рекомендации для основных обновлений алгоритма и Discover.'],
+      [/Our guidance about general core updates applies\.?/gi, 'Применяются рекомендации для основных обновлений алгоритма.'],
+      [/There was an issue with indexing fresh content in Google Search\. Sites may have experienced slower than usual indexing times\.?/gi, 'Возник сбой при индексации свежего контента в Google Search. Сайты могли испытывать задержки при индексации.'],
+      [/We fixed the issue with indexing fresh content\. There will be no more updates\.?/gi, 'Проблема с индексацией свежего контента полностью устранена. Дальнейших сообщений не планируется.'],
+      [/There's an ongoing issue with serving Google Lens, Discover, and Voice Search results that's affecting some users\.?/gi, 'Зафиксирован сбой в работе сервисов Google Lens, Discover и голосового поиска.'],
+      [/We fixed the issue with serving in Google Lens, Discover, and Voice Search\. There will be no more updates\.?/gi, 'Проблема с отображением результатов в Google Lens, Discover и голосовом поиске устранена. Дальнейших сообщений не планируется.']
     ];
 
-    for (const [regex, replacement] of ruMap) {
-      translated = translated.replace(regex, replacement);
+    for (const [pattern, rep] of phrases) {
+      res = res.replace(pattern, rep);
     }
   }
 
-  return translated;
+  // Clean trailing punctuation or double punctuation artifacts
+  return res
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/([.:!?,])\s*([.:!?])/g, '$2')
+    .trim();
 }
 
 /**
@@ -360,27 +475,27 @@ export function normalizeIncident(raw: any, lang: Language): NormalizedIncident 
   
   // Normalized Title/Description from correct Google statuses keys
   const rawTitle = raw.external_desc || raw.external_description || raw.description || raw.summary || 'Google Search Operations Adjustment';
-  const title = stripAngleBracketLinks(rawTitle);
+  const cleanTitle = stripAngleBracketLinks(rawTitle);
+  const title = cleanTitle;
+  const localizedTitle = translateTextAuto(cleanTitle, lang);
   
-  let updateText = '';
+  let localizedUpdateText = '';
   if (raw.updates && Array.isArray(raw.updates) && raw.updates.length > 0) {
-    updateText = raw.updates
-      .map((u: any) => stripAngleBracketLinks(u.text || ''))
+    localizedUpdateText = raw.updates
+      .map((u: any) => translateTextAuto(stripAngleBracketLinks(u.text || ''), lang))
       .filter(Boolean)
       .join('\n— ');
   } else if (raw.most_recent_update && raw.most_recent_update.text) {
-    updateText = stripAngleBracketLinks(raw.most_recent_update.text);
+    localizedUpdateText = translateTextAuto(stripAngleBracketLinks(raw.most_recent_update.text), lang);
   }
   
-  const desc = updateText ? `${title}: ${updateText}` : title;
+  const desc = localizedUpdateText ? `${localizedTitle}: ${localizedUpdateText}` : localizedTitle;
 
   // Premium translation dictionary / fallback mapping
   const offlineMatch = OFFLINE_INCIDENTS.find(o => o.id === id);
   let finalDesc = desc;
   if (offlineMatch) {
     finalDesc = offlineMatch.descriptions[lang] || offlineMatch.descriptions['en'];
-  } else {
-    finalDesc = translateTextAuto(desc, lang);
   }
 
   // Ensure any angle bracket links are completely stripped
