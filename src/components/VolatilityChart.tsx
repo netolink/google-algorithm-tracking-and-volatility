@@ -171,11 +171,11 @@ export default function VolatilityChart({ points, lang }: VolatilityChartProps) 
             const pt = points[context.dataIndex];
             if (!pt) return '';
             const val = pt.metricValue.toFixed(1);
-            let lvl = t.volatilityGuide.calm.title.split(' ')[0];
+            let lvl = t.volatilityGuide.calm.label || t.volatilityGuide.calm.title.split(' ')[0];
             if (pt.metricValue > 60) {
-              lvl = t.volatilityGuide.storm.title.split(' ')[0];
+              lvl = t.volatilityGuide.storm.label || t.volatilityGuide.storm.title.split(' ')[0];
             } else if (pt.metricValue > 30) {
-              lvl = t.volatilityGuide.volatile.title.split(' ')[0];
+              lvl = t.volatilityGuide.volatile.label || t.volatilityGuide.volatile.title.split(' ')[0];
             }
             const labelPrefix = lang === 'he' ? ' תנודתיות:' : lang === 'ru' ? ' Волатильность:' : ' Volatility:';
             return `${labelPrefix} ${val}% (${lvl})`;

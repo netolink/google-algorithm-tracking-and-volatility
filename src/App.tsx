@@ -132,7 +132,7 @@ export default function App() {
     if (val > 60) return {
       statusKey: 'storm',
       color: 'red',
-      title: t.volatilityGuide.storm.title.split(' ')[0],
+      title: t.volatilityGuide.storm.label || t.volatilityGuide.storm.title.split(' ')[0],
       bg: 'bg-gradient-to-r from-rose-500/15 via-red-500/10 to-rose-500/5 border border-rose-400/40 text-rose-700 shadow-xs shadow-rose-500/10',
       fill: 'bg-gradient-to-r from-rose-500 to-red-600',
       badge: 'bg-gradient-to-r from-rose-600 to-red-600 text-white shadow-md shadow-rose-600/30',
@@ -146,7 +146,7 @@ export default function App() {
     if (val > 30) return {
       statusKey: 'volatile',
       color: 'yellow',
-      title: t.volatilityGuide.volatile.title.split(' ')[0],
+      title: t.volatilityGuide.volatile.label || t.volatilityGuide.volatile.title.split(' ')[0],
       bg: 'bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/5 border border-amber-400/40 text-amber-800 shadow-xs shadow-amber-500/10',
       fill: 'bg-gradient-to-r from-amber-500 to-orange-500',
       badge: 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/30',
@@ -160,7 +160,7 @@ export default function App() {
     return {
       statusKey: 'calm',
       color: 'green',
-      title: t.volatilityGuide.calm.title.split(' ')[0],
+      title: t.volatilityGuide.calm.label || t.volatilityGuide.calm.title.split(' ')[0],
       bg: 'bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-emerald-500/5 border border-emerald-400/40 text-emerald-800 shadow-xs shadow-emerald-500/10',
       fill: 'bg-gradient-to-r from-emerald-500 to-teal-600',
       badge: 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/30',
@@ -459,15 +459,15 @@ export default function App() {
             <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 select-none font-medium">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50/80 border border-emerald-200/60 text-emerald-800">
                 <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-xs shadow-emerald-500/50"></span>
-                <span>{t.volatilityGuide.calm.title.split(' ')[0]}</span>
+                <span>{t.volatilityGuide.calm.label || t.volatilityGuide.calm.title.split(' ')[0]}</span>
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50/80 border border-amber-200/60 text-amber-800">
                 <span className="h-2.5 w-2.5 rounded-full bg-amber-500 shadow-xs shadow-amber-500/50"></span>
-                <span>{t.volatilityGuide.volatile.title.split(' ')[0]}</span>
+                <span>{t.volatilityGuide.volatile.label || t.volatilityGuide.volatile.title.split(' ')[0]}</span>
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50/80 border border-rose-200/60 text-rose-800">
                 <span className="h-2.5 w-2.5 rounded-full bg-rose-500 shadow-xs shadow-rose-500/50"></span>
-                <span>{t.volatilityGuide.storm.title.split(' ')[0]}</span>
+                <span>{t.volatilityGuide.storm.label || t.volatilityGuide.storm.title.split(' ')[0]}</span>
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50/80 border border-red-200 text-red-700 font-bold">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white shadow-xs shadow-red-600/50"></span>

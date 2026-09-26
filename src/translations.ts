@@ -27,16 +27,19 @@ export const translations: Record<Language, TranslationDict> = {
       subtitle: 'Understanding Google algorithm volatility index levels and SEO implications.',
       calm: {
         title: 'Calm (0% - 30%)',
+        label: 'Calm',
         range: '0% - 30%',
         desc: 'Normal baseline fluctuations. No active core or spam algorithm updates monitored.'
       },
       volatile: {
         title: 'Unstable (31% - 60%)',
+        label: 'Unstable',
         range: '31% - 60%',
         desc: 'Minor update rollouts or system indexing anomalies. Monitor search rankings closely.'
       },
       storm: {
         title: 'Algo Storm (61%+)',
+        label: 'Storm',
         range: '61% - 100%',
         desc: 'Official Core or Spam update active, or major system outage. High ranking flux globally.'
       }
@@ -110,16 +113,19 @@ export const translations: Record<Language, TranslationDict> = {
       subtitle: 'הסבר מקצועי על רמות מדד התנודתיות והשפעתן על הקידום האורגני (SEO).',
       calm: {
         title: 'רגוע (0% - 30%)',
+        label: 'רגוע',
         range: '0% - 30%',
         desc: 'תנודות שגרתיות וטבעיות בתוצאות החיפוש. לא זוהו עדכוני ליבה או ספאם פעילים ברקע.'
       },
       volatile: {
         title: 'תנודתי (31% - 60%)',
+        label: 'תנודתי',
         range: '31% - 60%',
         desc: 'שלבי בדיקה של עדכונים קטנים או אנומליות באינדוקס. מומלץ לעקוב מקרוב אחר דירוגי האתר.'
       },
       storm: {
         title: 'סערת אלגוריתם (61%+)',
+        label: 'סערה',
         range: '61% - 100%',
         desc: 'עדכון ליבה או ספאם רשמי פעיל, או תקלת מערכת רחבה. תנודתיות חריגה ומשמעותית בדירוגים בעולם.'
       }
@@ -193,16 +199,19 @@ export const translations: Record<Language, TranslationDict> = {
       subtitle: 'Классификация уровней волатильности поисковой выдачи и их значение для SEO.',
       calm: {
         title: 'Спокойно (0% - 30%)',
+        label: 'Спокойно',
         range: '0% - 30%',
         desc: 'Естественные базовые колебания. Активных обновлений основного алгоритма (Core) или спам-фильтров не обнаружено.'
       },
       volatile: {
         title: 'Нестабильно (31% - 60%)',
+        label: 'Нестабильно',
         range: '31% - 60%',
         desc: 'Предварительные раскатки небольших обновлений или аномалии индексации. Рекомендуется внимательно следить за позициями.'
       },
       storm: {
         title: 'Шторм алгоритма (61%+)',
+        label: 'Шторм',
         range: '61% - 100%',
         desc: 'Активно официальное обновление основного алгоритма (Core) или спам-фильтров, либо крупный сбой Google. Высокая турбулентность выдачи.'
       }

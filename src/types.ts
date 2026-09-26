@@ -26,16 +26,19 @@ export interface TranslationDict {
     subtitle: string;
     calm: {
       title: string;
+      label?: string;
       range: string;
       desc: string;
     };
     volatile: {
       title: string;
+      label?: string;
       range: string;
       desc: string;
     };
     storm: {
       title: string;
+      label?: string;
       range: string;
       desc: string;
     };
