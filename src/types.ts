@@ -9,6 +9,7 @@ export interface TranslationDict {
   title: string;
   subtitle: string;
   langLabel: string;
+  asOfDate: string;
   timeframes: {
     thirtyDays: string;
     ninetyDays: string;

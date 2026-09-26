@@ -95,11 +95,18 @@ export default function App() {
 
   const t = translations[lang];
   const isRtl = lang === 'he';
+  const currentLocale = lang === 'he' ? 'he-IL' : lang === 'ru' ? 'ru-RU' : 'en-US';
 
   // Calculations for analytical Overview HUD cards
   const activeTimeline = timeline;
   const lastPoint = activeTimeline[activeTimeline.length - 1];
   const currentVolatility = lastPoint ? lastPoint.metricValue : 0;
+  const latestDate = lastPoint?.date instanceof Date ? lastPoint.date : new Date();
+  const formattedUpdateDate = latestDate.toLocaleDateString(currentLocale, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
 
   // Average volatility calculation
   const totalVolatility = activeTimeline.reduce((acc, curr) => acc + curr.metricValue, 0);
@@ -227,15 +234,16 @@ export default function App() {
               </div>
             </div>
 
-            {/* Right Action Bar - Hyper-polished Live Data Status Pill */}
+            {/* Right Action Bar - Dynamic Data Freshness / Update Date Pill */}
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 border border-emerald-200 text-emerald-800 shadow-xs shadow-emerald-500/10 shrink-0 select-none">
-                <span className="flex h-2.5 w-2.5 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-sm shadow-emerald-500"></span>
-                </span>
-                <span className="font-mono text-[11px] font-bold tracking-wider uppercase">
-                  {lang === 'he' ? 'נתונים חיים' : lang === 'ru' ? 'Живые данные' : 'Live Data'}
+              <div
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 border border-slate-200/90 text-slate-700 shadow-2xs shrink-0 select-none"
+                title={lastUpdatedTime ? `${t.apiStatus.lastUpdated} ${lastUpdatedTime}` : undefined}
+              >
+                <Calendar className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span className="font-mono text-[11px] font-bold tracking-tight flex items-center gap-1">
+                  <span className="text-slate-500 font-medium">{t.asOfDate}</span>
+                  <span className="text-slate-800 font-bold">{formattedUpdateDate}</span>
                 </span>
               </div>
             </div>

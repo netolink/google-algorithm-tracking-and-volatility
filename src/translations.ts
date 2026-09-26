@@ -10,6 +10,7 @@ export const translations: Record<Language, TranslationDict> = {
     title: 'Google Algorithm & Volatility Tracker',
     subtitle: 'Real-time SERP volatility analytics correlated with official Google search infrastructure incidents.',
     langLabel: 'Language',
+    asOfDate: 'As of:',
     timeframes: {
       thirtyDays: '30 Days',
       ninetyDays: '90 Days',
@@ -96,6 +97,7 @@ export const translations: Record<Language, TranslationDict> = {
     title: 'מעקב עדכוני אלגוריתם ותנודתיות ב-Google',
     subtitle: 'ניתוח תנודתיות בתוצאות החיפוש (SERP) בזמן אמת, בהצלבה עם דיווחי תקלות ועדכונים רשמיים מבית Google.',
     langLabel: 'שפה',
+    asOfDate: 'נכון ל:',
     timeframes: {
       thirtyDays: '30 יום',
       ninetyDays: '90 יום',
@@ -182,6 +184,7 @@ export const translations: Record<Language, TranslationDict> = {
     title: 'Мониторинг алгоритмов и волатильности Google',
     subtitle: 'Аналитика волатильности поисковой выдачи (SERP) в реальном времени, сопоставленная с официальными сбоями и обновлениями Google.',
     langLabel: 'Язык',
+    asOfDate: 'Данные на:',
     timeframes: {
       thirtyDays: '30 дней',
       ninetyDays: '90 дней',
