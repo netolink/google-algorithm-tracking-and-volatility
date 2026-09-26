@@ -39,7 +39,40 @@ async function fetchAndSaveIncidents() {
       throw new Error('Google API did not return an array of incidents.');
     }
 
-    const jsonString = JSON.stringify(data, null, 2);
+    function cleanText(text) {
+      if (!text) return '';
+      return text
+        .replace(/\s*<https?:\/\/[^>]+>/gi, '')
+        .replace(/\s*<www\.[^>]+>/gi, '')
+        .replace(/\s*<[a-z0-9+.-]+:\/\/[^>]+>/gi, '')
+        .replace(/\s*<[^>\s]+\.[^>\s]+>/gi, '')
+        .replace(/[ \t]{2,}/g, ' ')
+        .replace(/ ([,\.!:;?])/g, '$1')
+        .trim();
+    }
+
+    const cleanedData = data.map(item => {
+      const copy = { ...item };
+      if (copy.external_desc) copy.external_desc = cleanText(copy.external_desc);
+      if (copy.external_description) copy.external_description = cleanText(copy.external_description);
+      if (copy.description) copy.description = cleanText(copy.description);
+      if (copy.summary) copy.summary = cleanText(copy.summary);
+      if (Array.isArray(copy.updates)) {
+        copy.updates = copy.updates.map(u => ({
+          ...u,
+          text: cleanText(u.text)
+        }));
+      }
+      if (copy.most_recent_update && copy.most_recent_update.text) {
+        copy.most_recent_update = {
+          ...copy.most_recent_update,
+          text: cleanText(copy.most_recent_update.text)
+        };
+      }
+      return copy;
+    });
+
+    const jsonString = JSON.stringify(cleanedData, null, 2);
 
     fs.writeFileSync(publicFile, jsonString, 'utf-8');
     fs.writeFileSync(srcDataFile, jsonString, 'utf-8');

@@ -19,7 +19,7 @@
         "created": "2026-08-18T16:28:47+00:00",
         "modified": "2026-08-21T08:49:58+00:00",
         "when": "2026-08-18T16:28:47+00:00",
-        "text": "Released the August 2026 spam update <https://developers.google.com/search/docs/appearance/spam-updates>, which applies globally and to all languages. The rollout may take a few days to complete.",
+        "text": "Released the August 2026 spam update, which applies globally and to all languages. The rollout may take a few days to complete.",
         "status": "SERVICE_INFORMATION"
       }
     ],
@@ -62,7 +62,7 @@
         "created": "2026-06-24T16:03:11+00:00",
         "modified": "2026-06-26T17:58:02+00:00",
         "when": "2026-06-24T16:03:11+00:00",
-        "text": "Released the June 2026 spam update <https://developers.google.com/search/docs/appearance/spam-updates>, which applies globally and to all languages. The rollout may take a few days to complete.",
+        "text": "Released the June 2026 spam update, which applies globally and to all languages. The rollout may take a few days to complete.",
         "status": "SERVICE_INFORMATION"
       }
     ],
@@ -105,7 +105,7 @@
         "created": "2026-05-21T15:43:28+00:00",
         "modified": "2026-06-02T12:43:57+00:00",
         "when": "2026-05-21T15:43:28+00:00",
-        "text": "Released the May 2026 core update <https://developers.google.com/search/updates/core-updates>. The rollout may take up to 2 weeks to complete.",
+        "text": "Released the May 2026 core update. The rollout may take up to 2 weeks to complete.",
         "status": "SERVICE_INFORMATION"
       }
     ],
@@ -148,7 +148,7 @@
         "created": "2026-03-27T09:14:16+00:00",
         "modified": "2026-04-08T13:12:36+00:00",
         "when": "2026-03-27T09:14:16+00:00",
-        "text": "Released the March 2026 core update <https://developers.google.com/search/updates/core-updates>. The rollout may take up to 2 weeks to complete.",
+        "text": "Released the March 2026 core update. The rollout may take up to 2 weeks to complete.",
         "status": "SERVICE_INFORMATION"
       }
     ],
@@ -191,7 +191,7 @@
         "created": "2026-03-24T19:18:08+00:00",
         "modified": "2026-03-25T14:39:33+00:00",
         "when": "2026-03-24T19:18:08+00:00",
-        "text": "Released the March 2026 spam update <https://developers.google.com/search/docs/appearance/spam-updates>, which applies globally and to all languages. The rollout may take a few days to complete.",
+        "text": "Released the March 2026 spam update, which applies globally and to all languages. The rollout may take a few days to complete.",
         "status": "SERVICE_INFORMATION"
       }
     ],
@@ -277,7 +277,7 @@
         "created": "2026-02-05T17:03:04+00:00",
         "modified": "2026-02-27T10:02:36+00:00",
         "when": "2026-02-05T17:03:04+00:00",
-        "text": "Released the February 2026 Discover core update <https://developers.google.com/search/blog/2026/02/discover-core-update> for English language users in the US (will look to expand it to all countries and languages in the future). This update is designed to improve the quality of Discover overall. Our guidance about general core updates <https://developers.google.com/search/docs/appearance/core-updates> and Discover <https://developers.google.com/search/docs/appearance/google-discover> applies. The rollout may take up to 2 weeks to complete.",
+        "text": "Released the February 2026 Discover core update for English language users in the US (will look to expand it to all countries and languages in the future). This update is designed to improve the quality of Discover overall. Our guidance about general core updates and Discover applies. The rollout may take up to 2 weeks to complete.",
         "status": "SERVICE_INFORMATION"
       }
     ],
@@ -320,7 +320,7 @@
         "created": "2025-12-11T17:25:48+00:00",
         "modified": "2025-12-29T19:05:33+00:00",
         "when": "2025-12-11T17:25:48+00:00",
-        "text": "Released the December 2025 core update <https://developers.google.com/search/updates/core-updates>. The rollout may take up to 3 weeks to complete.",
+        "text": "Released the December 2025 core update. The rollout may take up to 3 weeks to complete.",
         "status": "SERVICE_INFORMATION"
       }
     ],
@@ -413,7 +413,7 @@
         "created": "2025-08-26T16:02:38+00:00",
         "modified": "2025-09-22T06:14:22+00:00",
         "when": "2025-08-26T16:02:38+00:00",
-        "text": "Released the August 2025 spam update <https://developers.google.com/search/docs/appearance/spam-updates>, which applies globally and to all languages. The rollout may take a few weeks to complete.",
+        "text": "Released the August 2025 spam update, which applies globally and to all languages. The rollout may take a few weeks to complete.",
         "status": "SERVICE_INFORMATION"
       }
     ],

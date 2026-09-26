@@ -334,19 +334,42 @@ export function translateTextAuto(text: string, lang: Language): string {
 }
 
 /**
+ * Strips URLs enclosed in angle brackets (e.g. <https://...>) and cleans up spacing.
+ */
+export function stripAngleBracketLinks(text: string): string {
+  if (!text) return '';
+  return text
+    // Remove angle bracket URLs like <https://...>, <http://...>, <www...>, <ftp://...>
+    .replace(/\s*<https?:\/\/[^>]+>/gi, '')
+    .replace(/\s*<www\.[^>]+>/gi, '')
+    .replace(/\s*<[a-z0-9+.-]+:\/\/[^>]+>/gi, '')
+    // Also remove any remaining <...> that look like links or paths
+    .replace(/\s*<[^>\s]+\.[^>\s]+>/gi, '')
+    // Clean up multiple consecutive spaces
+    .replace(/[ \t]{2,}/g, ' ')
+    // Remove space before punctuation marks (e.g. "update ," -> "update,")
+    .replace(/ ([,\.!:;?])/g, '$1')
+    .trim();
+}
+
+/**
  * Normalization pipeline mapping raw incident anomalies safely
  */
 export function normalizeIncident(raw: any, lang: Language): NormalizedIncident {
   const id = raw.id || `incident-${Math.random()}`;
   
   // Normalized Title/Description from correct Google statuses keys
-  const title = raw.external_desc || raw.external_description || raw.description || raw.summary || 'Google Search Operations Adjustment';
+  const rawTitle = raw.external_desc || raw.external_description || raw.description || raw.summary || 'Google Search Operations Adjustment';
+  const title = stripAngleBracketLinks(rawTitle);
   
   let updateText = '';
   if (raw.updates && Array.isArray(raw.updates) && raw.updates.length > 0) {
-    updateText = raw.updates.map((u: any) => u.text).join('\n— ');
+    updateText = raw.updates
+      .map((u: any) => stripAngleBracketLinks(u.text || ''))
+      .filter(Boolean)
+      .join('\n— ');
   } else if (raw.most_recent_update && raw.most_recent_update.text) {
-    updateText = raw.most_recent_update.text;
+    updateText = stripAngleBracketLinks(raw.most_recent_update.text);
   }
   
   const desc = updateText ? `${title}: ${updateText}` : title;
@@ -359,6 +382,9 @@ export function normalizeIncident(raw: any, lang: Language): NormalizedIncident 
   } else {
     finalDesc = translateTextAuto(desc, lang);
   }
+
+  // Ensure any angle bracket links are completely stripped
+  finalDesc = stripAngleBracketLinks(finalDesc);
 
   // Parse fields using real Google keys
   let service: ServicesKeys = 'General';
@@ -396,7 +422,7 @@ export function normalizeIncident(raw: any, lang: Language): NormalizedIncident 
 export function getOfflineIncidents(lang: Language): NormalizedIncident[] {
   return OFFLINE_INCIDENTS.map(inc => ({
     id: inc.id,
-    description: inc.descriptions[lang] || inc.descriptions['en'],
+    description: stripAngleBracketLinks(inc.descriptions[lang] || inc.descriptions['en']),
     service: inc.service,
     begin: new Date(inc.begin),
     end: inc.end ? new Date(inc.end) : null,
