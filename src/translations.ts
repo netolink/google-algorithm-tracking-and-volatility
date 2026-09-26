@@ -10,6 +10,7 @@ export const translations: Record<Language, TranslationDict> = {
     title: 'Google Algorithm & Volatility Tracker',
     subtitle: 'Real-time SERP volatility analytics correlated with official Google search infrastructure incidents.',
     langLabel: 'Language',
+    by: 'by',
     asOfDate: 'As of:',
     timeframes: {
       thirtyDays: '30 Days',
@@ -97,6 +98,7 @@ export const translations: Record<Language, TranslationDict> = {
     title: 'מעקב עדכוני אלגוריתם ותנודתיות ב-Google',
     subtitle: 'ניתוח תנודתיות בתוצאות החיפוש (SERP) בזמן אמת, בהצלבה עם דיווחי תקלות ועדכונים רשמיים מבית Google.',
     langLabel: 'שפה',
+    by: 'מבית',
     asOfDate: 'נכון ל:',
     timeframes: {
       thirtyDays: '30 יום',
@@ -177,13 +179,14 @@ export const translations: Record<Language, TranslationDict> = {
       toolName: 'מעקב עדכוני אלגוריתם ותנודתיות ב-Google',
       by: 'מבית',
       copyright: 'כל הזכויות שמורות ©',
-      dataSource: 'מבוסס על נתוני Google Search Status API הרשמיים'
+      dataSource: 'מבוסס על נתוני Google Search Status הרשמיים'
     }
   },
   ru: {
     title: 'Мониторинг алгоритмов и волатильности Google',
     subtitle: 'Аналитика волатильности поисковой выдачи (SERP) в реальном времени, сопоставленная с официальными сбоями и обновлениями Google.',
     langLabel: 'Язык',
+    by: 'от',
     asOfDate: 'Данные на:',
     timeframes: {
       thirtyDays: '30 дней',
@@ -264,7 +267,7 @@ export const translations: Record<Language, TranslationDict> = {
       toolName: 'Мониторинг алгоритмов и волатильности Google',
       by: 'от',
       copyright: 'Все права защищены ©',
-      dataSource: 'На основе официальных данных Google Search Status API'
+      dataSource: 'На основе официальных данных Google Search Status'
     }
   }
 };

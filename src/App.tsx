@@ -220,7 +220,7 @@ export default function App() {
                     {t.title}
                   </h1>
                   <span className="text-xs text-slate-500 font-medium">
-                    by{' '}
+                    {t.by}{' '}
                     <a
                       href="https://netolink.com"
                       target="_blank"
