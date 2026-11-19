@@ -1,5 +1,83 @@
 [
   {
+    "id": "WLxcJyC6jMWMfryxsKMc",
+    "number": "6567352038624654547",
+    "begin": "2026-11-10T18:06:00+00:00",
+    "created": "2026-11-10T18:07:10+00:00",
+    "modified": "2026-11-10T18:07:10+00:00",
+    "external_desc": "November 2026 core update",
+    "updates": [
+      {
+        "created": "2026-11-10T18:07:10+00:00",
+        "modified": "2026-11-10T18:07:10+00:00",
+        "when": "2026-11-10T18:07:10+00:00",
+        "text": "Released the November 2026 core update, which applies globally and to all languages. The rollout may take up to 2 weeks to complete.",
+        "status": "SERVICE_INFORMATION"
+      }
+    ],
+    "most_recent_update": {
+      "created": "2026-11-10T18:07:10+00:00",
+      "modified": "2026-11-10T18:07:10+00:00",
+      "when": "2026-11-10T18:07:10+00:00",
+      "text": "Released the November 2026 core update, which applies globally and to all languages. The rollout may take up to 2 weeks to complete.",
+      "status": "SERVICE_INFORMATION"
+    },
+    "status_impact": "SERVICE_INFORMATION",
+    "severity": "low",
+    "service_key": "rGHU1u87FJnkP6W2GwMi",
+    "service_name": "Ranking",
+    "affected_products": [
+      {
+        "title": "Ranking",
+        "id": "rGHU1u87FJnkP6W2GwMi"
+      }
+    ],
+    "uri": "incidents/WLxcJyC6jMWMfryxsKMc"
+  },
+  {
+    "id": "XhUDXP7A67iHCD2kmbVu",
+    "number": "5986798205446974932",
+    "begin": "2026-09-24T16:15:00+00:00",
+    "created": "2026-09-24T16:15:47+00:00",
+    "end": "2026-10-08T08:00:00+00:00",
+    "modified": "2026-10-08T08:37:28+00:00",
+    "external_desc": "September 2026 spam update",
+    "updates": [
+      {
+        "created": "2026-10-08T08:37:09+00:00",
+        "modified": "2026-10-08T08:37:28+00:00",
+        "when": "2026-10-08T08:37:09+00:00",
+        "text": "The rollout was complete as of October 8, 2026.",
+        "status": "AVAILABLE"
+      },
+      {
+        "created": "2026-09-24T16:15:47+00:00",
+        "modified": "2026-10-08T08:37:09+00:00",
+        "when": "2026-09-24T16:15:47+00:00",
+        "text": "Released the September 2026 spam update, which applies globally and to all languages. The rollout may take up to two weeks to complete.",
+        "status": "SERVICE_INFORMATION"
+      }
+    ],
+    "most_recent_update": {
+      "created": "2026-10-08T08:37:09+00:00",
+      "modified": "2026-10-08T08:37:28+00:00",
+      "when": "2026-10-08T08:37:09+00:00",
+      "text": "The rollout was complete as of October 8, 2026.",
+      "status": "AVAILABLE"
+    },
+    "status_impact": "SERVICE_INFORMATION",
+    "severity": "low",
+    "service_key": "rGHU1u87FJnkP6W2GwMi",
+    "service_name": "Ranking",
+    "affected_products": [
+      {
+        "title": "Ranking",
+        "id": "rGHU1u87FJnkP6W2GwMi"
+      }
+    ],
+    "uri": "incidents/XhUDXP7A67iHCD2kmbVu"
+  },
+  {
     "id": "LEubPCm2octf2uMqCFKE",
     "number": "453832737276420062",
     "begin": "2026-08-18T16:27:00+00:00",
@@ -342,98 +420,5 @@
       }
     ],
     "uri": "incidents/DsirqJ1gpPRgVQeccPRv"
-  },
-  {
-    "id": "pW6WN7Ymo49q7z8pKk9w",
-    "number": "13659202675197012648",
-    "begin": "2025-10-03T20:00:00+00:00",
-    "created": "2025-10-03T21:21:11+00:00",
-    "end": "2025-10-06T20:40:00+00:00",
-    "modified": "2025-10-06T20:40:37+00:00",
-    "external_desc": "Serving is experiencing an ongoing issue",
-    "updates": [
-      {
-        "created": "2025-10-06T20:40:14+00:00",
-        "modified": "2025-10-06T20:40:37+00:00",
-        "when": "2025-10-06T20:40:14+00:00",
-        "text": "The issue with serving has resolved itself. There will be no more updates.",
-        "status": "AVAILABLE"
-      },
-      {
-        "created": "2025-10-04T19:22:50+00:00",
-        "modified": "2025-10-06T20:40:14+00:00",
-        "when": "2025-10-04T19:22:50+00:00",
-        "text": "We've identified an issue with serving and have been working on a fix. The next update will be within 48 hours.",
-        "status": "SERVICE_DISRUPTION"
-      },
-      {
-        "created": "2025-10-03T21:21:11+00:00",
-        "modified": "2025-10-04T19:22:50+00:00",
-        "when": "2025-10-03T21:21:11+00:00",
-        "text": "There's an ongoing data center issue that may impact serving of some pages in some locales. We're working on identifying the root cause. The next update will be within 24 hours.",
-        "status": "SERVICE_DISRUPTION"
-      }
-    ],
-    "most_recent_update": {
-      "created": "2025-10-06T20:40:14+00:00",
-      "modified": "2025-10-06T20:40:37+00:00",
-      "when": "2025-10-06T20:40:14+00:00",
-      "text": "The issue with serving has resolved itself. There will be no more updates.",
-      "status": "AVAILABLE"
-    },
-    "status_impact": "SERVICE_DISRUPTION",
-    "severity": "medium",
-    "service_key": "pKUD9XkLn3TBLquSpQMD",
-    "service_name": "Serving",
-    "affected_products": [
-      {
-        "title": "Serving",
-        "id": "pKUD9XkLn3TBLquSpQMD"
-      }
-    ],
-    "uri": "incidents/pW6WN7Ymo49q7z8pKk9w"
-  },
-  {
-    "id": "a7Aainy6E9rZsmfq82xt",
-    "number": "10431133316204073730",
-    "begin": "2025-08-26T16:00:00+00:00",
-    "created": "2025-08-26T16:02:38+00:00",
-    "end": "2025-09-22T07:00:00+00:00",
-    "modified": "2025-09-22T06:14:57+00:00",
-    "external_desc": "August 2025 spam update",
-    "updates": [
-      {
-        "created": "2025-09-22T06:14:22+00:00",
-        "modified": "2025-09-22T06:14:57+00:00",
-        "when": "2025-09-22T06:14:22+00:00",
-        "text": "The rollout was complete as of September 22, 2025.",
-        "status": "AVAILABLE"
-      },
-      {
-        "created": "2025-08-26T16:02:38+00:00",
-        "modified": "2025-09-22T06:14:22+00:00",
-        "when": "2025-08-26T16:02:38+00:00",
-        "text": "Released the August 2025 spam update, which applies globally and to all languages. The rollout may take a few weeks to complete.",
-        "status": "SERVICE_INFORMATION"
-      }
-    ],
-    "most_recent_update": {
-      "created": "2025-09-22T06:14:22+00:00",
-      "modified": "2025-09-22T06:14:57+00:00",
-      "when": "2025-09-22T06:14:22+00:00",
-      "text": "The rollout was complete as of September 22, 2025.",
-      "status": "AVAILABLE"
-    },
-    "status_impact": "SERVICE_INFORMATION",
-    "severity": "low",
-    "service_key": "rGHU1u87FJnkP6W2GwMi",
-    "service_name": "Ranking",
-    "affected_products": [
-      {
-        "title": "Ranking",
-        "id": "rGHU1u87FJnkP6W2GwMi"
-      }
-    ],
-    "uri": "incidents/a7Aainy6E9rZsmfq82xt"
   }
 ]
