@@ -198,20 +198,54 @@ export interface RawGoogleIncident {
   status?: string;
 }
 
+export type IncidentCategory = 'core' | 'spam' | 'discover' | 'system';
+
+export interface IncidentUpdate {
+  when: Date;
+  text: string;
+  status?: string;
+}
+
 export interface NormalizedIncident {
   id: string;
+  title: string;
   description: string;
   service: ServicesKeys;
+  category: IncidentCategory;
   begin: Date;
   end: Date | null;
+  durationHours: number;
   status: 'active' | 'resolved';
   isCoreUpdate: boolean;
+  updates: IncidentUpdate[];
 }
 
 export interface VolatilityPoint {
   date: Date;
   dateStr: string;
   metricValue: number;
+  movingAvg7d: number;
   incidentCount: number;
   incidents: NormalizedIncident[];
+}
+
+export interface MonthlyIncidentBucket {
+  monthKey: string;
+  date: Date;
+  coreCount: number;
+  spamCount: number;
+  systemCount: number;
+  total: number;
+}
+
+export interface HistoricalInsights {
+  avgCoreDurationDays: number | null;
+  avgSpamDurationDays: number | null;
+  avgDaysBetweenUpdates: number | null;
+  daysSinceLastUpdate: number | null;
+  latestAlgoUpdateTitle: string | null;
+  totalCoreUpdates: number;
+  totalSpamUpdates: number;
+  totalSystemIncidents: number;
+  monthlyDistribution: MonthlyIncidentBucket[];
 }

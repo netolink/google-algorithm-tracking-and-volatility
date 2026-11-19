@@ -3,32 +3,42 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Activity,
-  AlertTriangle,
   CheckCircle,
   HelpCircle,
   Calendar,
   Layers,
   ChevronDown,
   ChevronUp,
-  Search,
   ShieldAlert,
-  Info,
   TrendingUp,
   Zap,
-  SlidersHorizontal,
   Radio,
-  Clock,
-  Sparkles,
-  Filter
+  Download,
+  Image as ImageIcon,
+  X,
+  Clock
 } from 'lucide-react';
-import { Language, NormalizedIncident, VolatilityPoint } from './types';
+import {
+  Language,
+  NormalizedIncident,
+  VolatilityPoint
+} from './types';
 import { translations } from './translations';
-import { fetchGoogleIncidents, compileTimeline, stripAngleBracketLinks } from './dataEngine';
+import { featureCopy } from './featureCopy';
+import {
+  fetchGoogleIncidents,
+  compileTimeline,
+  computeHistoricalInsights,
+  stripAngleBracketLinks
+} from './dataEngine';
+import { exportTimelineToCsv, exportChartToPng } from './utils/exportUtils';
 import VolatilityChart from './components/VolatilityChart';
+import IncidentTimelineDrawer from './components/IncidentTimelineDrawer';
+import HistoricalInsightsPanel from './components/HistoricalInsightsPanel';
+import SeoDiagnosticChecklist from './components/SeoDiagnosticChecklist';
 
 const getInitialLanguage = (): Language => {
   try {
@@ -52,6 +62,19 @@ export default function App() {
   const [expandedFaq, setExpandedFaq] = useState<Record<string, boolean>>({});
   const [incidentFilter, setIncidentFilter] = useState<'all' | 'core' | 'system'>('all');
   const [lastUpdatedTime, setLastUpdatedTime] = useState<string>('');
+  const [showMovingAvg, setShowMovingAvg] = useState<boolean>(true);
+  const [drawerIncident, setDrawerIncident] = useState<NormalizedIncident | null>(null);
+  const [highlightedIncident, setHighlightedIncident] = useState<NormalizedIncident | null>(null);
+  const chartInstanceRef = useRef<any>(null);
+
+  const handleChartReady = useCallback((instance: any) => {
+    chartInstanceRef.current = instance;
+  }, []);
+
+  const handleInspectIncident = (inc: NormalizedIncident) => {
+    setDrawerIncident(inc);
+    setHighlightedIncident(inc);
+  };
 
   // Update dynamic sync timestamp helper
   const updateSyncTimestamp = () => {
@@ -94,6 +117,7 @@ export default function App() {
   }, [lang]);
 
   const t = translations[lang];
+  const fc = featureCopy[lang];
   const isRtl = lang === 'he';
   const currentLocale = lang === 'he' ? 'he-IL' : lang === 'ru' ? 'ru-RU' : 'en-US';
 
@@ -113,19 +137,26 @@ export default function App() {
   const avgVolatility = activeTimeline.length > 0 ? (totalVolatility / activeTimeline.length) : 0;
 
   // Maximum Volatility point search
-  const maxPoint = activeTimeline.reduce((prev, current) => {
-    return (prev.metricValue > current.metricValue) ? prev : current;
+  const maxPoint = activeTimeline.reduce<{ metricValue: number; date: Date }>((prev, current) => {
+    const val = current.metricValue;
+    return (prev.metricValue > val) ? prev : { metricValue: val, date: current.date };
   }, { metricValue: 0, date: new Date() });
 
   // Incidents filtered by the active timeframe
   const activeTimeframeIncidents = incidents.filter(inc => {
     const timeframeDaysAgo = new Date();
     timeframeDaysAgo.setDate(timeframeDaysAgo.getDate() - timeframe);
-    return new Date(inc.begin) >= timeframeDaysAgo;
+    return new Date(inc.begin) >= timeframeDaysAgo || inc.status === 'active';
   });
 
   const coreUpdatesCount = activeTimeframeIncidents.filter(i => i.isCoreUpdate).length;
   const standardIncidentsCount = activeTimeframeIncidents.filter(i => !i.isCoreUpdate).length;
+  const hasActiveIncident = incidents.some(i => i.status === 'active');
+
+  const historicalInsights = useMemo(
+    () => computeHistoricalInsights(incidents, new Date()),
+    [incidents]
+  );
 
   // Filtered incidents for table
   const displayedIncidents = activeTimeframeIncidents.filter(inc => {
@@ -481,13 +512,19 @@ export default function App() {
                 <span className="h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white shadow-xs shadow-red-600/50"></span>
                 <span>{lang === 'he' ? 'עדכון רשמי של Google' : lang === 'ru' ? 'Обновление Google' : 'Google Update'}</span>
               </span>
+              {showMovingAvg && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50/80 border border-indigo-200 text-indigo-700 font-semibold">
+                  <span className="w-4 border-t-2 border-dashed border-indigo-600"></span>
+                  <span>{fc.chartControls.movingAvgLabel}</span>
+                </span>
+              )}
             </div>
 
             {/* Timeframe selector controls */}
             <div className="inline-flex items-center gap-1 bg-slate-100/90 p-1.5 rounded-full border border-slate-200/80 self-start lg:self-auto shadow-inner">
               <button
                 onClick={() => setTimeframe(30)}
-                className={`px-4 py-1.5 text-xs rounded-full transition-all cursor-pointer ${
+                className={`px-4 py-1.5 text-xs rounded-full transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   timeframe === 30 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 font-bold' : 'text-slate-600 hover:text-slate-900 font-medium'
                 }`}
                 id="btn-timeframe-30"
@@ -496,7 +533,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => setTimeframe(90)}
-                className={`px-4 py-1.5 text-xs rounded-full transition-all cursor-pointer ${
+                className={`px-4 py-1.5 text-xs rounded-full transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   timeframe === 90 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 font-bold' : 'text-slate-600 hover:text-slate-900 font-medium'
                 }`}
                 id="btn-timeframe-90"
@@ -505,7 +542,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => setTimeframe(365)}
-                className={`px-4 py-1.5 text-xs rounded-full transition-all cursor-pointer ${
+                className={`px-4 py-1.5 text-xs rounded-full transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   timeframe === 365 ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/25 font-bold' : 'text-slate-600 hover:text-slate-900 font-medium'
                 }`}
                 id="btn-timeframe-365"
@@ -515,9 +552,76 @@ export default function App() {
             </div>
           </div>
 
+          {/* Analytics Toolbar: 7D Moving Avg, Highlight & Exports */}
+          <div className="flex flex-wrap items-center justify-between gap-3 -mt-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowMovingAvg(prev => !prev)}
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                  showMovingAvg
+                    ? 'bg-indigo-50 border-indigo-200 text-indigo-700'
+                    : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <span className="w-3.5 border-t-2 border-dashed border-current" />
+                {fc.chartControls.movingAvgToggle}
+              </button>
+
+              {highlightedIncident && (
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs bg-rose-50/80 border border-rose-200 text-rose-800 max-w-xs">
+                  <span className="truncate font-medium">
+                    {fc.chartControls.highlightedPrefix} {highlightedIncident.title}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setHighlightedIncident(null)}
+                    aria-label={fc.chartControls.clearHighlight}
+                    className="text-rose-600 hover:text-rose-900 shrink-0 cursor-pointer"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => exportTimelineToCsv(activeTimeline, timeframe, lang)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                <Download className="h-3.5 w-3.5 text-slate-500" />
+                {fc.chartControls.exportCsv}
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  exportChartToPng(
+                    chartInstanceRef.current,
+                    t.title,
+                    `${timeframe}D · ${formattedUpdateDate}`,
+                    timeframe
+                  )
+                }
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                <ImageIcon className="h-3.5 w-3.5 text-slate-500" />
+                {fc.chartControls.exportPng}
+              </button>
+            </div>
+          </div>
+
           {/* Actual Line Graph Canvas Container */}
           <div className="w-full h-[320px] sm:h-[400px]">
-            <VolatilityChart points={timeline} lang={lang} />
+            <VolatilityChart
+              points={timeline}
+              lang={lang}
+              showMovingAvg={showMovingAvg}
+              selectedIncident={highlightedIncident}
+              onSelectIncident={handleInspectIncident}
+              onChartReady={handleChartReady}
+            />
           </div>
 
         </section>
@@ -572,6 +676,9 @@ export default function App() {
 
           </div>
         </section>
+
+        {/* Historical Insights & Update Cadence Benchmarks */}
+        <HistoricalInsightsPanel insights={historicalInsights} lang={lang} />
 
         {/* Official Incident Log Data Grid Table */}
         <section className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_-6px_rgba(15,23,42,0.06)] flex flex-col gap-6" id="log-section">
@@ -646,17 +753,32 @@ export default function App() {
                         ? `${new Date(inc.begin).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric', year: 'numeric' })} - ${new Date(inc.end).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric', year: 'numeric' })}`
                         : `${new Date(inc.begin).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric', year: 'numeric' })} - ${lang === 'he' ? 'פעיל כעת' : lang === 'ru' ? 'Активно' : 'Active'}`;
 
+                      const isSelected = highlightedIncident?.id === inc.id;
+                      const daysDur = Math.floor(inc.durationHours / 24);
+                      const hoursDur = inc.durationHours % 24;
+                      const durStr =
+                        daysDur > 0
+                          ? `${daysDur}${fc.drawer.daysShort} ${hoursDur}${fc.drawer.hoursShort}`
+                          : `${hoursDur}${fc.drawer.hoursShort}`;
+
                       return (
-                        <tr key={inc.id} className="hover:bg-blue-50/20 transition-colors">
-                          <td className="px-5 py-4 whitespace-nowrap text-xs font-mono text-slate-600 font-bold">
-                            {dateRangeStr}
+                        <tr
+                          key={inc.id}
+                          onClick={() => handleInspectIncident(inc)}
+                          className={`transition-colors cursor-pointer ${
+                            isSelected ? 'bg-indigo-50/60 hover:bg-indigo-50' : 'hover:bg-blue-50/30'
+                          }`}
+                        >
+                          <td className="px-5 py-4 whitespace-nowrap text-xs font-mono tabular-nums text-slate-600 font-bold">
+                            <div>{dateRangeStr}</div>
+                            <div className="text-[11px] font-normal text-slate-400 mt-0.5">
+                              {durStr}
+                            </div>
                           </td>
                           <td className="px-5 py-4">
                             <div className="flex flex-col gap-1">
                               <span className="font-bold text-slate-900 block font-heading text-sm">
-                                {inc.isCoreUpdate 
-                                  ? (lang === 'he' ? 'עדכון אלגוריתם רשמי של Google' : lang === 'ru' ? 'Официальное обновление алгоритма Google' : 'Google Algorithmic Update') 
-                                  : serviceLabel}
+                                {inc.title}
                               </span>
                               <span className="text-slate-500 text-xs leading-relaxed max-w-2xl block font-normal">
                                 {stripAngleBracketLinks(inc.description)}
@@ -674,12 +796,25 @@ export default function App() {
                             </span>
                           </td>
                           <td className="px-5 py-4 whitespace-nowrap text-xs">
-                            <span className={`inline-flex items-center gap-2 font-bold ${
-                              inc.status === 'active' ? 'text-rose-600' : 'text-emerald-700'
-                            }`}>
-                              <span className={`h-2 w-2 rounded-full ${inc.status === 'active' ? 'bg-rose-500 animate-ping' : 'bg-emerald-500 shadow-xs shadow-emerald-500/50'}`}></span>
-                              {inc.status === 'active' ? t.eventTable.statusActive : t.eventTable.statusResolved}
-                            </span>
+                            <div className="flex items-center justify-between gap-3">
+                              <span className={`inline-flex items-center gap-2 font-bold ${
+                                inc.status === 'active' ? 'text-rose-600' : 'text-emerald-700'
+                              }`}>
+                                <span className={`h-2 w-2 rounded-full ${inc.status === 'active' ? 'bg-rose-500 animate-ping' : 'bg-emerald-500 shadow-xs shadow-emerald-500/50'}`}></span>
+                                {inc.status === 'active' ? t.eventTable.statusActive : t.eventTable.statusResolved}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={e => {
+                                  e.stopPropagation();
+                                  handleInspectIncident(inc);
+                                }}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                              >
+                                <Clock className="h-3 w-3 text-slate-500" />
+                                {fc.drawer.viewTimelineBtn}
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
@@ -696,21 +831,26 @@ export default function App() {
                   const dateRangeStr = inc.end
                     ? `${new Date(inc.begin).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric' })} - ${new Date(inc.end).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric', year: 'numeric' })}`
                     : `${new Date(inc.begin).toLocaleDateString(currentLocale, { month: 'short', day: 'numeric' })} - ${lang === 'he' ? 'פעיל כעת' : lang === 'ru' ? 'Активно' : 'Active'}`;
+                  const isSelected = highlightedIncident?.id === inc.id;
 
                   return (
-                    <div key={inc.id} className="p-4 flex flex-col gap-2.5 hover:bg-slate-50 transition-colors">
+                    <div
+                      key={inc.id}
+                      onClick={() => handleInspectIncident(inc)}
+                      className={`p-4 flex flex-col gap-2.5 transition-colors cursor-pointer ${
+                        isSelected ? 'bg-indigo-50/50' : 'hover:bg-slate-50'
+                      }`}
+                    >
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex flex-col">
-                          <span className="text-[10px] font-mono text-slate-500 font-bold">
+                          <span className="text-[10px] font-mono tabular-nums text-slate-500 font-bold">
                             {dateRangeStr}
                           </span>
                           <span className="font-bold text-slate-900 mt-0.5 text-xs font-heading">
-                            {inc.isCoreUpdate 
-                              ? (lang === 'he' ? 'עדכון ליבה רשמי של Google' : lang === 'ru' ? 'Обновление алгоритма Google' : 'Core Update') 
-                              : serviceLabel}
+                            {inc.title}
                           </span>
                         </div>
-                        <span className={`text-[10px] font-mono px-2.5 py-0.5 rounded-full font-bold select-none shadow-2xs ${
+                        <span className={`text-[10px] font-mono px-2.5 py-0.5 rounded-full font-bold select-none shadow-2xs shrink-0 ${
                           inc.service === 'Ranking' ? 'bg-rose-100 text-rose-800 border border-rose-200' :
                           inc.service === 'Indexing' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
                           'bg-emerald-100 text-emerald-800 border border-emerald-200'
@@ -724,7 +864,10 @@ export default function App() {
                       </p>
 
                       <div className="flex items-center justify-between border-t border-slate-100 pt-2 text-[10px]">
-                        <span className="text-slate-400 font-mono">ID: {inc.id.substring(0, 15)}</span>
+                        <span className="text-blue-600 font-semibold inline-flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {fc.drawer.viewTimelineBtn} ({inc.updates.length})
+                        </span>
                         <span className={`inline-flex items-center gap-1.5 font-bold ${
                           inc.status === 'active' ? 'text-rose-600' : 'text-emerald-700'
                         }`}>
@@ -740,6 +883,9 @@ export default function App() {
             </div>
           )}
         </section>
+
+        {/* Interactive SEO Traffic Drop Diagnostic Checklist */}
+        <SeoDiagnosticChecklist hasActiveUpdate={hasActiveIncident} lang={lang} />
 
         {/* SEO Educational & FAQ Accordion Section */}
         <section className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_-6px_rgba(15,23,42,0.06)] flex flex-col gap-6" id="faq-section">
@@ -833,6 +979,24 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Incident Rollout Timeline Slide-Over Drawer */}
+      <IncidentTimelineDrawer
+        incident={drawerIncident}
+        allIncidents={displayedIncidents.length > 0 ? displayedIncidents : incidents}
+        isHighlightedOnChart={Boolean(
+          drawerIncident && highlightedIncident?.id === drawerIncident.id
+        )}
+        onToggleChartHighlight={() => {
+          if (!drawerIncident) return;
+          setHighlightedIncident(prev =>
+            prev?.id === drawerIncident.id ? null : drawerIncident
+          );
+        }}
+        onSelectIncident={inc => handleInspectIncident(inc)}
+        onClose={() => setDrawerIncident(null)}
+        lang={lang}
+      />
 
     </div>
   );

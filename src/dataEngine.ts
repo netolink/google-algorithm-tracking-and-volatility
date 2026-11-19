@@ -3,7 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Language, NormalizedIncident, ServicesKeys, VolatilityPoint } from './types';
+import {
+  HistoricalInsights,
+  IncidentCategory,
+  IncidentUpdate,
+  Language,
+  MonthlyIncidentBucket,
+  NormalizedIncident,
+  ServicesKeys,
+  VolatilityPoint
+} from './types';
 
 // Structured offline high-fidelity local database representing major Google incidents and Core Updates (2025 - 2026)
 export interface OfflineIncident {
@@ -207,46 +216,107 @@ export function getDeterministicBaseline(date: Date): number {
   return Math.max(4, Math.min(29, Number((base + wave).toFixed(1))));
 }
 
+
+function getIncidentBaseBoost(inc: NormalizedIncident): number {
+  if (inc.isCoreUpdate) {
+    if (inc.category === 'core') return 58;
+    if (inc.category === 'discover') return 54;
+    if (inc.category === 'spam') return 52;
+    return 55;
+  }
+  if (inc.service === 'Ranking') return 42;
+  if (inc.service === 'Indexing') return 36;
+  if (inc.service === 'Serving') return 22;
+  if (inc.service === 'Crawling') return 18;
+  return 25;
+}
+
 /**
- * Custom algorithmic model to project volatility index (0% - 100%)
- * Spikes volatility during active incidents (65% - 95%)
+ * Enhanced natural volatility model:
+ * - Pre-update algorithmic tremors (1-2 days prior to Core/Spam rollouts)
+ * - Gradual rollout ramp-up instead of abrupt rectangular cliffs
+ * - Diminishing-weight compounding when multiple incidents overlap
+ * - Smooth 3-day post-rollout decay cooldown
  */
-export function calculateVolatility(date: Date, activeIncidents: NormalizedIncident[]): number {
+export function calculateNaturalVolatility(
+  date: Date,
+  allIncidents: NormalizedIncident[],
+  activeIncidents: NormalizedIncident[],
+  referenceNow: Date = new Date()
+): number {
   const baseline = getDeterministicBaseline(date);
-  if (activeIncidents.length === 0) {
+  const dayMs = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  const todayMs = Date.UTC(
+    referenceNow.getUTCFullYear(),
+    referenceNow.getUTCMonth(),
+    referenceNow.getUTCDate()
+  );
+
+  const effectiveBoosts: number[] = [];
+  let maxPlateauFactor = 0;
+
+  for (const inc of allIncidents) {
+    const b = inc.begin;
+    const beginMs = Date.UTC(b.getUTCFullYear(), b.getUTCMonth(), b.getUTCDate());
+    const e = inc.end;
+    const endMs = e
+      ? Date.UTC(e.getUTCFullYear(), e.getUTCMonth(), e.getUTCDate())
+      : todayMs;
+
+    const baseBoost = getIncidentBaseBoost(inc);
+
+    if (dayMs >= beginMs && dayMs <= endMs) {
+      const daysSinceBegin = Math.round((dayMs - beginMs) / 86400000);
+      const totalSpanDays = Math.max(1, Math.round((endMs - beginMs) / 86400000) + 1);
+
+      let ramp = 1;
+      if (totalSpanDays > 2) {
+        if (daysSinceBegin === 0) ramp = 0.68;
+        else if (daysSinceBegin === 1) ramp = 0.9;
+        else ramp = 1;
+
+        if (inc.end && totalSpanDays >= 5 && dayMs === endMs) {
+          ramp = Math.min(ramp, 0.86);
+        }
+      }
+
+      effectiveBoosts.push(baseBoost * ramp);
+      if (inc.isCoreUpdate && ramp > maxPlateauFactor) {
+        maxPlateauFactor = ramp;
+      }
+    } else if (dayMs < beginMs && inc.isCoreUpdate) {
+      const daysBefore = Math.round((beginMs - dayMs) / 86400000);
+      if (daysBefore === 1) effectiveBoosts.push(12);
+      else if (daysBefore === 2) effectiveBoosts.push(6);
+    } else if (inc.end && dayMs > endMs) {
+      const daysAfter = Math.round((dayMs - endMs) / 86400000);
+      if (daysAfter === 1) effectiveBoosts.push(baseBoost * 0.52);
+      else if (daysAfter === 2) effectiveBoosts.push(baseBoost * 0.27);
+      else if (daysAfter === 3) effectiveBoosts.push(baseBoost * 0.12);
+    }
+  }
+
+  if (effectiveBoosts.length === 0) {
     return baseline;
   }
 
-  let maxBoost = 0;
-  activeIncidents.forEach(inc => {
-    let boost = 25;
-    if (inc.isCoreUpdate) {
-      boost = 58;
-    } else if (inc.service === 'Ranking') {
-      boost = 42;
-    } else if (inc.service === 'Indexing') {
-      boost = 36;
-    } else if (inc.service === 'Serving') {
-      boost = 22;
-    } else if (inc.service === 'Crawling') {
-      boost = 18;
-    }
-    if (boost > maxBoost) maxBoost = boost;
-  });
+  effectiveBoosts.sort((a, b) => b - a);
+  const primary = effectiveBoosts[0];
+  const secondary = effectiveBoosts
+    .slice(1)
+    .reduce((sum, val) => sum + val * 0.35, 0);
 
-  const dateSeed = date.getDate();
-  const noise = (dateSeed * 13) % 13 - 6; // -6% to +6% to keep dynamic curves
-  let finalVal = baseline + maxBoost + noise;
+  const combinedBoost = Math.min(68, primary + secondary);
+  const dateSeed = date.getUTCDate();
+  const noise = ((dateSeed * 13 + date.getUTCMonth() * 7) % 9) - 4;
+  let finalVal = baseline + combinedBoost + noise;
 
   const hasCore = activeIncidents.some(i => i.isCoreUpdate);
-  if (hasCore) {
-    if (finalVal < 74) finalVal = 74 + (dateSeed % 14);
-    if (finalVal > 98) finalVal = 98 - (dateSeed % 5);
-  } else {
-    if (finalVal < 45) finalVal = 45 + (dateSeed % 12);
-    if (finalVal > 73) finalVal = 73 - (dateSeed % 6);
+  if (hasCore && maxPlateauFactor >= 0.88) {
+    if (finalVal < 72) finalVal = 72 + (dateSeed % 12);
   }
 
+  finalVal = Math.max(4, Math.min(98, finalVal));
   return Number(finalVal.toFixed(1));
 }
 
@@ -467,6 +537,20 @@ export function stripAngleBracketLinks(text: string): string {
     .trim();
 }
 
+function detectIncidentCategory(text: string): IncidentCategory {
+  const lower = text.toLowerCase();
+  if (lower.includes('discover')) return 'discover';
+  if (lower.includes('spam update')) return 'spam';
+  if (lower.includes('core update') || lower.includes('helpful content')) return 'core';
+  return 'system';
+}
+
+function computeDurationHours(begin: Date, end: Date | null): number {
+  const endTime = end ? end.getTime() : Date.now();
+  const diffMs = Math.max(0, endTime - begin.getTime());
+  return Math.max(1, Math.round(diffMs / (1000 * 60 * 60)));
+}
+
 /**
  * Normalization pipeline mapping raw incident anomalies safely
  */
@@ -478,16 +562,37 @@ export function normalizeIncident(raw: any, lang: Language): NormalizedIncident 
   const cleanTitle = stripAngleBracketLinks(rawTitle);
   const title = cleanTitle;
   const localizedTitle = translateTextAuto(cleanTitle, lang);
-  
-  let localizedUpdateText = '';
+
+  const parsedUpdates: IncidentUpdate[] = [];
   if (raw.updates && Array.isArray(raw.updates) && raw.updates.length > 0) {
-    localizedUpdateText = raw.updates
-      .map((u: any) => translateTextAuto(stripAngleBracketLinks(u.text || ''), lang))
-      .filter(Boolean)
-      .join('\n— ');
+    for (const u of raw.updates) {
+      const cleaned = stripAngleBracketLinks(u.text || '');
+      if (!cleaned) continue;
+      parsedUpdates.push({
+        when: u.when ? new Date(u.when) : (u.created ? new Date(u.created) : new Date(raw.begin || Date.now())),
+        text: stripAngleBracketLinks(translateTextAuto(cleaned, lang)),
+        status: u.status
+      });
+    }
   } else if (raw.most_recent_update && raw.most_recent_update.text) {
-    localizedUpdateText = translateTextAuto(stripAngleBracketLinks(raw.most_recent_update.text), lang);
+    const cleaned = stripAngleBracketLinks(raw.most_recent_update.text);
+    if (cleaned) {
+      parsedUpdates.push({
+        when: raw.most_recent_update.when ? new Date(raw.most_recent_update.when) : new Date(raw.begin || Date.now()),
+        text: stripAngleBracketLinks(translateTextAuto(cleaned, lang)),
+        status: raw.most_recent_update.status
+      });
+    }
   }
+
+  parsedUpdates.sort((a, b) => a.when.getTime() - b.when.getTime());
+
+  const localizedUpdateText = parsedUpdates
+    .slice()
+    .reverse()
+    .map(u => u.text)
+    .filter(Boolean)
+    .join('\n— ');
   
   const desc = localizedUpdateText ? `${localizedTitle}: ${localizedUpdateText}` : localizedTitle;
 
@@ -512,6 +617,8 @@ export function normalizeIncident(raw: any, lang: Language): NormalizedIncident 
 
   const beginStr = raw.begin || raw.start_time;
   const endStr = raw.end || raw.end_time || raw.resolved;
+  const beginDate = beginStr ? new Date(beginStr) : new Date();
+  const endDate = endStr ? new Date(endStr) : null;
 
   const isCoreUpdate = title.toLowerCase().includes('core update') || 
                        title.toLowerCase().includes('spam update') || 
@@ -520,14 +627,28 @@ export function normalizeIncident(raw: any, lang: Language): NormalizedIncident 
                        desc.toLowerCase().includes('spam update') ||
                        desc.toLowerCase().includes('helpful content');
 
+  const category = detectIncidentCategory(`${title} ${rawTitle}`);
+  const finalTitle = offlineMatch
+    ? stripAngleBracketLinks((offlineMatch.descriptions[lang] || offlineMatch.descriptions['en']).split(':')[0])
+    : stripAngleBracketLinks(localizedTitle);
+
+  const fallbackUpdates: IncidentUpdate[] =
+    parsedUpdates.length > 0
+      ? parsedUpdates
+      : [{ when: beginDate, text: finalDesc }];
+
   return {
     id,
+    title: finalTitle,
     description: finalDesc,
     service,
-    begin: beginStr ? new Date(beginStr) : new Date(),
-    end: endStr ? new Date(endStr) : null,
+    category,
+    begin: beginDate,
+    end: endDate,
+    durationHours: computeDurationHours(beginDate, endDate),
     status: raw.status === 'active' || !endStr ? 'active' : 'resolved',
-    isCoreUpdate
+    isCoreUpdate,
+    updates: fallbackUpdates
   };
 }
 
@@ -535,15 +656,32 @@ export function normalizeIncident(raw: any, lang: Language): NormalizedIncident 
  * Integrates localized descriptors into NormalizedIncidents when fallback occurs
  */
 export function getOfflineIncidents(lang: Language): NormalizedIncident[] {
-  return OFFLINE_INCIDENTS.map(inc => ({
-    id: inc.id,
-    description: stripAngleBracketLinks(inc.descriptions[lang] || inc.descriptions['en']),
-    service: inc.service,
-    begin: new Date(inc.begin),
-    end: inc.end ? new Date(inc.end) : null,
-    status: inc.end ? 'resolved' : 'active',
-    isCoreUpdate: inc.isCoreUpdate
-  }));
+  return OFFLINE_INCIDENTS.map(inc => {
+    const beginDate = new Date(inc.begin);
+    const endDate = inc.end ? new Date(inc.end) : null;
+    const fullDesc = stripAngleBracketLinks(inc.descriptions[lang] || inc.descriptions['en']);
+    const titlePart = fullDesc.split(':')[0] || fullDesc;
+    const bodyPart = fullDesc.includes(':') ? fullDesc.slice(fullDesc.indexOf(':') + 1).trim() : fullDesc;
+
+    return {
+      id: inc.id,
+      title: titlePart,
+      description: fullDesc,
+      service: inc.service,
+      category: detectIncidentCategory(inc.descriptions['en']),
+      begin: beginDate,
+      end: endDate,
+      durationHours: computeDurationHours(beginDate, endDate),
+      status: inc.end ? 'resolved' : 'active',
+      isCoreUpdate: inc.isCoreUpdate,
+      updates: [
+        {
+          when: beginDate,
+          text: bodyPart
+        }
+      ]
+    };
+  });
 }
 
 /**
@@ -603,45 +741,50 @@ export async function fetchGoogleIncidents(
 }
 
 /**
- * Compiles absolute chronology of points (dates mapped with volatility scores and incidents details)
+ * Compiles absolute chronology of points with a 6-day lookback buffer so the
+ * 7-day moving average is accurate from day 1 of the requested timeframe.
  */
 export function compileTimeline(
   days: number,
   incidents: NormalizedIncident[],
-  currentDate: Date = new Date() // Current real-world timestamp
+  currentDate: Date = new Date()
 ): VolatilityPoint[] {
-  const points: VolatilityPoint[] = [];
+  const lookbackBuffer = 6;
+  const totalDays = days + lookbackBuffer;
+  const rawPoints: Array<{
+    date: Date;
+    dateStr: string;
+    metricValue: number;
+    incidentCount: number;
+    incidents: NormalizedIncident[];
+  }> = [];
   
-  for (let i = days - 1; i >= 0; i--) {
+  for (let i = totalDays - 1; i >= 0; i--) {
     const d = new Date(currentDate);
     d.setUTCDate(currentDate.getUTCDate() - i);
     d.setUTCHours(0, 0, 0, 0);
 
-    // List the official incidents active during *this* date
     const activeIncidents = incidents.filter(inc => {
       const beginDay = new Date(inc.begin);
-      beginDay.setUTCHours(0,0,0,0);
+      beginDay.setUTCHours(0, 0, 0, 0);
       
       const endDay = inc.end ? new Date(inc.end) : null;
-      if (endDay) endDay.setUTCHours(23,59,59,999);
+      if (endDay) endDay.setUTCHours(23, 59, 59, 999);
 
       if (endDay) {
         return d >= beginDay && d <= endDay;
-      } else {
-        // Active/Ongoing incident
-        return d >= beginDay;
       }
+      return d >= beginDay;
     });
 
-    const metricValue = calculateVolatility(d, activeIncidents);
+    const metricValue = calculateNaturalVolatility(d, incidents, activeIncidents, currentDate);
 
-    // Dynamic formatting for labels
     const dateStr = d.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric'
     });
 
-    points.push({
+    rawPoints.push({
       date: d,
       dateStr,
       metricValue,
@@ -650,5 +793,117 @@ export function compileTimeline(
     });
   }
 
-  return points;
+  const withMovingAverages: VolatilityPoint[] = rawPoints.map((pt, idx) => {
+    const startIdx = Math.max(0, idx - 6);
+    const slice = rawPoints.slice(startIdx, idx + 1);
+    const avgNatural = slice.reduce((acc, item) => acc + item.metricValue, 0) / slice.length;
+
+    return {
+      ...pt,
+      movingAvg7d: Number(avgNatural.toFixed(1))
+    };
+  });
+
+  return withMovingAverages.slice(lookbackBuffer);
+}
+
+/**
+ * Computes historical statistics and a 12-month incident frequency distribution.
+ */
+export function computeHistoricalInsights(
+  incidents: NormalizedIncident[],
+  referenceDate: Date = new Date()
+): HistoricalInsights {
+  const algoUpdates = incidents
+    .filter(inc => inc.isCoreUpdate)
+    .slice()
+    .sort((a, b) => b.begin.getTime() - a.begin.getTime());
+
+  const coreCompleted = algoUpdates.filter(
+    inc => (inc.category === 'core' || inc.category === 'discover') && inc.end !== null
+  );
+  const spamCompleted = algoUpdates.filter(
+    inc => inc.category === 'spam' && inc.end !== null
+  );
+
+  const avgCoreDurationDays =
+    coreCompleted.length > 0
+      ? Number(
+          (
+            coreCompleted.reduce((sum, inc) => sum + inc.durationHours / 24, 0) /
+            coreCompleted.length
+          ).toFixed(1)
+        )
+      : null;
+
+  const avgSpamDurationDays =
+    spamCompleted.length > 0
+      ? Number(
+          (
+            spamCompleted.reduce((sum, inc) => sum + inc.durationHours / 24, 0) /
+            spamCompleted.length
+          ).toFixed(1)
+        )
+      : null;
+
+  let avgDaysBetweenUpdates: number | null = null;
+  if (algoUpdates.length >= 2) {
+    let gapSum = 0;
+    for (let i = 0; i < algoUpdates.length - 1; i++) {
+      const diffDays = Math.abs(
+        (algoUpdates[i].begin.getTime() - algoUpdates[i + 1].begin.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      gapSum += diffDays;
+    }
+    avgDaysBetweenUpdates = Math.round(gapSum / (algoUpdates.length - 1));
+  }
+
+  const latestUpdate = algoUpdates[0] || null;
+  const daysSinceLastUpdate = latestUpdate
+    ? Math.max(
+        0,
+        Math.floor((referenceDate.getTime() - latestUpdate.begin.getTime()) / (1000 * 60 * 60 * 24))
+      )
+    : null;
+
+  const monthlyDistribution: MonthlyIncidentBucket[] = [];
+  const bucketMap = new Map<string, MonthlyIncidentBucket>();
+
+  for (let offset = 11; offset >= 0; offset--) {
+    const d = new Date(Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth() - offset, 1));
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+    const bucket: MonthlyIncidentBucket = {
+      monthKey: key,
+      date: d,
+      coreCount: 0,
+      spamCount: 0,
+      systemCount: 0,
+      total: 0
+    };
+    monthlyDistribution.push(bucket);
+    bucketMap.set(key, bucket);
+  }
+
+  for (const inc of incidents) {
+    const key = `${inc.begin.getUTCFullYear()}-${String(inc.begin.getUTCMonth() + 1).padStart(2, '0')}`;
+    const bucket = bucketMap.get(key);
+    if (!bucket) continue;
+
+    if (inc.category === 'spam') bucket.spamCount += 1;
+    else if (inc.isCoreUpdate) bucket.coreCount += 1;
+    else bucket.systemCount += 1;
+    bucket.total += 1;
+  }
+
+  return {
+    avgCoreDurationDays,
+    avgSpamDurationDays,
+    avgDaysBetweenUpdates,
+    daysSinceLastUpdate,
+    latestAlgoUpdateTitle: latestUpdate ? latestUpdate.title : null,
+    totalCoreUpdates: algoUpdates.filter(i => i.category !== 'spam').length,
+    totalSpamUpdates: algoUpdates.filter(i => i.category === 'spam').length,
+    totalSystemIncidents: incidents.filter(i => !i.isCoreUpdate).length,
+    monthlyDistribution
+  };
 }
